@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 import Hero from './components/Hero';
 import NationalAverage from './components/NationalAverage';
 import PopularStations from './components/PopularStations';
@@ -27,7 +28,7 @@ function App() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex items-center justify-between">
               <Link to="/" className="flex items-center hover:opacity-90 transition-opacity">
-                <img src="/costco-logo.svg" alt="CostcoFuelPrices" className="h-8" />
+                <img src="/logo.svg" alt="CostcoFuelPrices" className="h-8" />
               </Link>
               <nav className="hidden md:flex items-center space-x-8">
                 <Link 
@@ -144,7 +145,7 @@ function App() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               <div>
                 <Link to="/" className="inline-block">
-                  <img src="/costco-logo.svg" alt="CostcoFuelPrices" className="h-8 mb-4" />
+                  <img src="/logo.svg" alt="CostcoFuelPrices" className="h-8 mb-4" />
                 </Link>
                 <p className="text-sm text-gray-500">
                   CostcoFuelPrices.com is an independent source for monitoring fuel prices at Costco gas stations. We are not affiliated with Costco.
@@ -190,6 +191,9 @@ function App() {
             </div>
           </div>
         </footer>
+
+        {/* Vercel Analytics */}
+        <Analytics />
       </div>
     </Router>
   );

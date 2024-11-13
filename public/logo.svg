@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="40" viewBox="0 0 200 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Gas Pump Icon -->
+  <g transform="translate(0, 4)">
+    <path d="M24 32H8c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2h16c1.1 0 2 .9 2 2v24c0 1.1-.9 2-2 2z" fill="#005DAA"/>
+    <path d="M28 12l4-4v16c0 1.1-.9 2-2 2s-2-.9-2-2V12z" fill="#005DAA"/>
+    <rect x="10" y="8" width="12" height="6" rx="1" fill="white"/>
+    <circle cx="16" cy="24" r="4" fill="white"/>
+  </g>
+  
+  <!-- Text "COSTCO" -->
+  <text x="40" y="20" font-family="Arial Black, sans-serif" font-size="16" font-weight="bold" fill="#005DAA">COSTCO</text>
+  
+  <!-- Text "GAS PRICES" -->
+  <text x="40" y="35" font-family="Arial, sans-serif" font-size="14" fill="#E31837">GAS PRICES</text>
+</svg>
