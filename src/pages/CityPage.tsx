@@ -8,6 +8,7 @@ import StationList from '../components/StationList';
 import { stations } from '../data/stations';
 import { StationData } from '../types';
 import { stateAbbreviations } from '../utils/states';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 const CityPage = () => {
   const { state, city } = useParams();
@@ -29,12 +30,11 @@ const CityPage = () => {
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 
-  // Update document title
-  React.useEffect(() => {
-    if (formattedCity && formattedState) {
-      document.title = `Costco Gas Prices ${formattedCity}, ${formattedState}`;
-    }
-  }, [formattedCity, formattedState]);
+  // Set page title and meta description
+  usePageTitle(
+    `Costco Gas Prices ${formattedCity}, ${formattedState}`,
+    `Find current Costco gas prices in ${formattedCity}, ${formattedState}. Compare fuel costs and get directions to your nearest Costco gas station.`
+  );
 
   // Get stations for this city
   const cityStations = stations.filter(station => 

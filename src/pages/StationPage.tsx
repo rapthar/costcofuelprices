@@ -7,6 +7,7 @@ import { stations } from '../data/stations';
 import PriceChart from '../components/PriceChart';
 import NearbyStations from '../components/NearbyStations';
 import { stateAbbreviations } from '../utils/states';
+import { usePageTitle } from '../hooks/usePageTitle';
 import 'leaflet/dist/leaflet.css';
 
 const customIcon = new Icon({
@@ -22,14 +23,31 @@ const StationPage = () => {
   const { id } = useParams();
   const station = stations.find(s => s.Title.toLowerCase().replace(/\s+/g, '-') === id);
 
-  if (!station) {
-    return <div>Station not found</div>;
-  }
+  usePageTitle(
+    station 
+      ? `Costco - ${station["Street Address"]} - ${station.City}, ${stateAbbreviations[station["State Full"]]}`
+      : 'Station Not Found - CostcoFuelPrices.com',
+    station
+      ? `Current gas prices at Costco ${station["Store Name"]} located at ${station["Street Address"]}, ${station.City}, ${stateAbbreviations[station["State Full"]]}. Find the latest fuel costs and station information.`
+      : 'The requested Costco gas station could not be found.'
+  );
 
-  // Update document title
-  React.useEffect(() => {
-    document.title = `Costco - ${station["Street Address"]} - ${station.City}, ${stateAbbreviations[station["State Full"]]}`;
-  }, [station]);
+  if (!station) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">Station Not Found</h1>
+          <p className="text-gray-600 mb-8">The requested Costco gas station could not be found.</p>
+          <Link
+            to="/"
+            className="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Return Home
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   // Find nearby stations (within 50 miles)
   const nearbyStations = stations.filter(s => {
