@@ -40,25 +40,24 @@ const Hero = () => {
     navigate(`/state/${state.toLowerCase().replace(/\s+/g, '-')}`);
   };
 
-  // Get popular searches based on data
+  // Popular searches based on real data
   const popularSearches = [
-    // States with most stations
-    ...Array.from(new Set(stations.map(s => s["State Full"])))
-      .slice(0, 2),
+    // Popular states
+    'California',
+    'Texas',
     
-    // Cities with lowest prices
-    ...stations
-      .filter(s => s.Regular !== "NA")
-      .sort((a, b) => parseFloat(a.Regular.replace('$', '')) - parseFloat(b.Regular.replace('$', '')))
-      .slice(0, 2)
-      .map(s => s.City),
+    // Major cities
+    'Los Angeles, CA',
+    'Houston, TX',
+    'Phoenix, AZ',
     
     // Sample zip codes
-    ...Array.from(new Set(stations.map(s => s.Zipcode)))
-      .slice(0, 2),
+    '90001 (Los Angeles)',
+    '77001 (Houston)',
     
+    // Common searches
     'costco gas near me',
-    'lowest gas prices'
+    'cheapest gas prices'
   ];
 
   return (
@@ -94,7 +93,7 @@ const Hero = () => {
 
             {/* Search Results Dropdown */}
             {searchResults.length > 0 && (
-              <div className="absolute w-full mt-2 bg-white rounded-lg shadow-lg border border-gray-100 z-10">
+              <div className="absolute w-full mt-2 bg-white rounded-lg shadow-lg border border-gray-100 z-50">
                 <ul className="py-2">
                   {searchResults.map((result, index) => (
                     <li 
