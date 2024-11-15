@@ -64,19 +64,27 @@ const StatePage = () => {
         Costco Gas Prices in {formattedState}
       </h1>
 
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+          <p className="text-sm text-gray-500">Average {filters.fuelType} Price</p>
+          <p className="text-2xl font-bold text-green-600">
+            ${averagePrice.toFixed(2)}
+          </p>
+        </div>
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+          <p className="text-sm text-gray-500">Total Stations</p>
+          <p className="text-2xl font-bold text-gray-900">
+            {filteredStations.length}
+          </p>
+        </div>
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+          <p className="text-sm text-gray-500">Last Updated</p>
+          <p className="text-2xl font-bold text-gray-900">6 Hours Ago</p>
+        </div>
+      </div>
+
       {/* Main Content */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Map */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 lg:col-span-2">
-          <div className="h-[400px]">
-            <Map
-              stations={filteredStations}
-              selectedStation={selectedStation}
-              onStationSelect={setSelectedStation}
-            />
-          </div>
-        </div>
-
         {/* Sidebar */}
         <div className="lg:col-span-1 space-y-6">
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
@@ -88,22 +96,36 @@ const StatePage = () => {
           </div>
         </div>
 
-        {/* Station List */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="font-semibold text-gray-900">
-              Showing {filteredStations.length} Stations
-            </h2>
-            <button className="flex items-center text-sm text-gray-600 hover:text-gray-900">
-              <ArrowUpDown className="w-4 h-4 mr-1" />
-              Sort by Price
-            </button>
+        {/* Main Content */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* Map */}
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+            <div className="h-[400px]">
+              <Map
+                stations={filteredStations}
+                selectedStation={selectedStation}
+                onStationSelect={setSelectedStation}
+              />
+            </div>
           </div>
-          <StationList
-            stations={filteredStations}
-            selectedStation={selectedStation}
-            onStationSelect={setSelectedStation}
-          />
+
+          {/* Station List */}
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="font-semibold text-gray-900">
+                Showing {filteredStations.length} Stations
+              </h2>
+              <button className="flex items-center text-sm text-gray-600 hover:text-gray-900">
+                <ArrowUpDown className="w-4 h-4 mr-1" />
+                Sort by Price
+              </button>
+            </div>
+            <StationList
+              stations={filteredStations}
+              selectedStation={selectedStation}
+              onStationSelect={setSelectedStation}
+            />
+          </div>
         </div>
       </div>
     </div>
