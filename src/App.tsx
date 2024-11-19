@@ -9,6 +9,7 @@ import StateGrid from './components/StateGrid';
 import StationPage from './pages/StationPage';
 import StatePage from './pages/StatePage';
 import CityPage from './pages/CityPage';
+import MapPage from './pages/MapPage';
 import USGasStations from './pages/USGasStations';
 import CanadaGasStations from './pages/CanadaGasStations';
 import SearchPage from './pages/SearchPage';
@@ -44,6 +45,9 @@ function App() {
                     <span>Locations</span>
                   </button>
                   <div className="absolute left-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                    <Link to="/map" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                      Interactive Map
+                    </Link>
                     <Link to="/us-gas-stations" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
                       Costco United States
                     </Link>
@@ -91,6 +95,7 @@ function App() {
                 </div>
               </div>
             } />
+            <Route path="/map" element={<MapPage />} />
             <Route path="/station/:id" element={<StationPage />} />
             <Route path="/state/:state" element={<StatePage />} />
             <Route path="/state/:state/:city" element={<CityPage />} />
@@ -154,7 +159,7 @@ function App() {
               </div>
             </div>
             <div className="mt-8 pt-8 border-t text-center text-sm text-gray-500">
-              <p>Copyright © {new Date().getFullYear()} Costco Fuel Price | All Rights Reserved</p>
+              <p>Copyright {new Date().getFullYear()} Costco Fuel Price | All Rights Reserved</p>
             </div>
           </div>
         </footer>
