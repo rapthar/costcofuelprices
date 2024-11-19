@@ -2701,6 +2701,6 @@ export const canadaStations: StationData[] = [
       "Last Updated": "November 19, 2024",
       "Disclaimer": "Prices shown here are updated frequently, but may not reflect the price at the pump at the time of purchase. All sales will be made at the price posted on the pumps at each Costco location at the time of purchase.",
       "post_author": "info4"
-    },
-  
+    }
   ]
+]
