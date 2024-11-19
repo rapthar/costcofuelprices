@@ -20,7 +20,7 @@ const ProvinceGrid = () => {
   }, []);
 
   const getStationId = (station: any) => {
-    return `costco-gas-in-${station.City.toLowerCase()}-${station.Address.toLowerCase()}`.replace(/\s+/g, '-');
+    return `costco-gas-in-${station.City.toLowerCase().replace(/\s+/g, '-')}-${station.Address.toLowerCase().replace(/\s+/g, '-')}`;
   };
 
   return (
@@ -32,7 +32,7 @@ const ProvinceGrid = () => {
               to={`/canada/${province.toLowerCase().replace(/\s+/g, '-')}`}
               className="block"
             >
-              <h2 className="text-xl font-semibold text-gray-900 mb-4 hover:text-blue-600">
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">
                 {province}
               </h2>
             </Link>

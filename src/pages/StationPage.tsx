@@ -36,7 +36,7 @@ const StationPage = () => {
   // Find station based on ID format
   const station = isCanada 
     ? canadaStations[0].find(s => getStationId(s) === id)
-    : stations.find(s => s.Title.toLowerCase().replace(/\s+/g, '-') === id);
+    : stations.find(s => getStationId(s) === id);
 
   usePageTitle(
     station 
