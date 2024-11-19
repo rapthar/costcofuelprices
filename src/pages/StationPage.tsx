@@ -26,7 +26,10 @@ const StationPage = () => {
   
   // Find station based on country
   const station = isCanada 
-    ? canadaStations[0].find(s => s.Title.toLowerCase().replace(/\s+/g, '-') === id)
+    ? canadaStations[0].find(s => {
+        const stationId = `${s["Store Name"]}-${s.City}-${s["State Full"]}`.toLowerCase().replace(/\s+/g, '-');
+        return stationId === id;
+      })
     : stations.find(s => s.Title.toLowerCase().replace(/\s+/g, '-') === id);
 
   usePageTitle(
