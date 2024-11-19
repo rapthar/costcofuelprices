@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRight, MapPin } from 'lucide-react';
 import StateGrid from '../components/StateGrid';
+import ProvinceGrid from '../components/ProvinceGrid';
 
 const SearchPage = () => {
   React.useEffect(() => {
@@ -28,25 +29,17 @@ const SearchPage = () => {
         {/* US States Section */}
         <section className="mb-16">
           <h2 className="text-2xl font-bold text-gray-900 mb-8">
-            Costco Gas Stations by State
+            United States Gas Stations by State
           </h2>
           <StateGrid />
         </section>
 
         {/* Canada Provinces Section */}
         <section className="mb-16">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+          <h2 className="text-2xl font-bold text-gray-900 mb-8">
             Canada Gas Stations by Province
           </h2>
-          <div className="bg-blue-50 rounded-lg p-8 text-center max-w-2xl">
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">
-              Coming Soon to Canada
-            </h3>
-            <p className="text-gray-600">
-              We're currently working on bringing Costco gas prices for Canadian locations. 
-              Check back soon for updates!
-            </p>
-          </div>
+          <ProvinceGrid />
         </section>
       </div>
     </div>
