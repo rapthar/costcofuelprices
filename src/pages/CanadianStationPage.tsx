@@ -23,7 +23,9 @@ const CanadianStationPage = () => {
   const { id } = useParams();
 
   const getStationId = (station: any) => {
-    return `costco-gas-in-${station.City.toLowerCase().replace(/\s+/g, '-')}-${station.Address.toLowerCase().replace(/\s+/g, '-')}`;
+    const citySlug = station.City.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    const addressSlug = station.Address.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    return `${citySlug}-${addressSlug}`;
   };
 
   // Find station from Canadian stations data

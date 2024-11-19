@@ -117,8 +117,8 @@ function App() {
             {/* Canada Routes */}
             <Route path="/canada-map" element={<CanadaMapPage />} />
             <Route path="/canada-gas-stations" element={<CanadaGasStations />} />
-            <Route path="/canada/:state/:city" element={<CityPage />} />
-            <Route path="/canada/:state" element={<StatePage />} />
+            <Route path="/canada/:province/:city" element={<CityPage />} />
+            <Route path="/canada/:province" element={<StatePage />} />
             
             {/* Station Routes */}
             <Route path="/station/costco-gas-in-:id" element={<CanadianStationPage />} />

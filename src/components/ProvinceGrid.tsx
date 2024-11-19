@@ -20,7 +20,9 @@ const ProvinceGrid = () => {
   }, []);
 
   const getStationId = (station: any) => {
-    return `costco-gas-in-${station.City.toLowerCase().replace(/\s+/g, '-')}-${station.Address.toLowerCase().replace(/\s+/g, '-')}`;
+    const citySlug = station.City.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    const addressSlug = station.Address.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    return `${citySlug}-${addressSlug}`;
   };
 
   return (
@@ -43,7 +45,7 @@ const ProvinceGrid = () => {
               {stations.slice(0, 3).map((station, index) => (
                 <Link
                   key={index}
-                  to={`/station/${getStationId(station)}`}
+                  to={`/station/costco-gas-in-${getStationId(station)}`}
                   className="flex items-start gap-3 group"
                 >
                   <MapPin className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" />
