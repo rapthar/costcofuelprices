@@ -19,6 +19,10 @@ const ProvinceGrid = () => {
     return Object.entries(grouped).sort((a, b) => a[0].localeCompare(b[0]));
   }, []);
 
+  const getStationId = (station: any) => {
+    return `costco-gas-in-${station.City.toLowerCase()}-${station.Address.toLowerCase()}`.replace(/\s+/g, '-');
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -39,7 +43,7 @@ const ProvinceGrid = () => {
               {stations.slice(0, 3).map(station => (
                 <Link
                   key={station['Store Name']}
-                  to={`/canada/${province.toLowerCase().replace(/\s+/g, '-')}/${station.City.toLowerCase().replace(/\s+/g, '-')}`}
+                  to={`/station/${getStationId(station)}`}
                   className="flex items-start gap-3 group"
                 >
                   <MapPin className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" />
