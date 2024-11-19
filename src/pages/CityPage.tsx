@@ -71,6 +71,15 @@ const CityPage = () => {
         Costco Gas Prices in {formattedCity}, {formattedState}
       </h1>
 
+      {/* Map */}
+      <div className="w-full h-[400px] mb-8 bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+        <Map
+          stations={filteredStations}
+          selectedStation={selectedStation}
+          onStationSelect={setSelectedStation}
+        />
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
           <p className="text-sm text-gray-500">Average {filters.fuelType} Price</p>
@@ -105,32 +114,13 @@ const CityPage = () => {
 
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Map */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-            <div className="h-[400px]">
-              <Map
-                stations={filteredStations}
-                selectedStation={selectedStation}
-                onStationSelect={setSelectedStation}
-              />
-            </div>
-          </div>
-
           {/* Station List */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="font-semibold text-gray-900">
-                Showing {filteredStations.length} Stations
-              </h2>
-              <button className="flex items-center text-sm text-gray-600 hover:text-gray-900">
-                <ArrowUpDown className="w-4 h-4 mr-1" />
-                Sort by Price
-              </button>
-            </div>
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200">
             <StationList
               stations={filteredStations}
               selectedStation={selectedStation}
               onStationSelect={setSelectedStation}
+              fuelType={filters.fuelType}
             />
           </div>
         </div>
