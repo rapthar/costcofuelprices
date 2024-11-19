@@ -27,7 +27,6 @@ const CanadianAverage = () => {
             <div className="text-3xl font-bold text-blue-600">
               {formatCADPrice(averagePrice)}
             </div>
-            <div className="text-gray-500">per litre</div>
           </div>
           <p className="text-sm text-gray-500 mt-2">
             Average price across all Costco locations in Canada

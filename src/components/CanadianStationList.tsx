@@ -47,7 +47,7 @@ const CanadianStationList: React.FC<CanadianStationListProps> = ({
             </div>
             <div className="text-right">
               <p className="font-semibold text-green-600">
-                {formatCADPrice(station[fuelType])}/L
+                {formatCADPrice(station[fuelType])}
               </p>
               <div className="flex items-center text-xs text-gray-500 mt-1">
                 <Clock className="h-3 w-3 mr-1" />
@@ -59,16 +59,16 @@ const CanadianStationList: React.FC<CanadianStationListProps> = ({
           <div className="mt-3 grid grid-cols-3 gap-2 text-sm">
             <div className="text-center p-2 bg-gray-50 rounded">
               <p className="text-gray-600">Regular</p>
-              <p className="font-semibold">{formatCADPrice(station.Regular)}/L</p>
+              <p className="font-semibold">{formatCADPrice(station.Regular)}</p>
             </div>
             <div className="text-center p-2 bg-gray-50 rounded">
               <p className="text-gray-600">Premium</p>
-              <p className="font-semibold">{formatCADPrice(station.Premium)}/L</p>
+              <p className="font-semibold">{formatCADPrice(station.Premium)}</p>
             </div>
             <div className="text-center p-2 bg-gray-50 rounded">
               <p className="text-gray-600">Diesel</p>
               <p className="font-semibold">
-                {station.Diesel !== "NA" ? `${formatCADPrice(station.Diesel)}/L` : "-"}
+                {station.Diesel !== "NA" ? formatCADPrice(station.Diesel) : "-"}
               </p>
             </div>
           </div>

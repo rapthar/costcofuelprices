@@ -32,11 +32,11 @@ const CanadaMapPage = () => {
       station.Address.toLowerCase().includes(searchQuery.toLowerCase()) ||
       station["State Full"].toLowerCase().includes(searchQuery.toLowerCase());
     const price = station[filters.fuelType];
-    const matchesPrice = price !== 'NA' && parseFloat(price) <= filters.maxPrice;
+    const matchesPrice = price !== 'NA' && !isNaN(parseFloat(price)) && parseFloat(price) <= filters.maxPrice;
     return matchesSearch && matchesPrice;
   });
 
-  const validPrices = filteredStations.filter(s => s[filters.fuelType] !== "NA");
+  const validPrices = filteredStations.filter(s => s[filters.fuelType] !== "NA" && !isNaN(parseFloat(s[filters.fuelType])));
   const averagePrice = validPrices.length > 0
     ? validPrices.reduce((acc, station) => acc + parseFloat(station[filters.fuelType]), 0) / validPrices.length
     : 0;
@@ -69,7 +69,7 @@ const CanadaMapPage = () => {
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
           <p className="text-sm text-gray-500">Average {filters.fuelType} Price</p>
           <p className="text-2xl font-bold text-green-600">
-            {formatCADPrice(averagePrice)}/L
+            {formatCADPrice(averagePrice)}
           </p>
         </div>
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
