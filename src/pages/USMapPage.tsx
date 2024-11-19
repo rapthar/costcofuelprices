@@ -59,7 +59,7 @@ const MapPage = () => {
           selectedStation={selectedStation}
           onStationSelect={setSelectedStation}
           center={[39.8283, -98.5795]} // Center of the United States
-          zoom={5} // Increased zoom level
+          zoom={2.5} // Adjusted zoom level as requested
         />
       </div>
 
