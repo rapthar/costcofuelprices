@@ -21,8 +21,10 @@ const customIcon = new Icon({
 });
 
 const StationPage = () => {
-  const { id, country } = useParams();
-  const isCanada = country === 'canada';
+  const { id } = useParams();
+
+  // Determine if this is a Canadian station by checking the URL format
+  const isCanada = id?.includes('costco-gas-in-');
 
   const getStationId = (station: any) => {
     if (isCanada) {
@@ -31,7 +33,7 @@ const StationPage = () => {
     return station.Title.toLowerCase().replace(/\s+/g, '-');
   };
 
-  // Find station based on country
+  // Find station based on ID format
   const station = isCanada 
     ? canadaStations[0].find(s => getStationId(s) === id)
     : stations.find(s => s.Title.toLowerCase().replace(/\s+/g, '-') === id);

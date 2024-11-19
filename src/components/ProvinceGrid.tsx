@@ -25,7 +25,7 @@ const ProvinceGrid = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {stationsByProvince.map(([province, stations]) => (
           <div key={province} className="bg-white rounded-lg shadow-sm p-6">
             <Link
@@ -40,9 +40,9 @@ const ProvinceGrid = () => {
               {stations.length} location{stations.length !== 1 ? 's' : ''}
             </div>
             <div className="space-y-3">
-              {stations.slice(0, 3).map(station => (
+              {stations.slice(0, 3).map((station, index) => (
                 <Link
-                  key={station['Store Name']}
+                  key={index}
                   to={`/station/${getStationId(station)}`}
                   className="flex items-start gap-3 group"
                 >
