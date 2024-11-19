@@ -1,5 +1,6 @@
 import React from 'react';
-import { stations } from '../data/stations';
+import { Link } from 'react-router-dom';
+import { usstations } from '../data/usstations';
 import { stateAbbreviations } from '../utils/states';
 import StateCard from './StateCard';
 
@@ -31,7 +32,7 @@ const StateGrid = () => {
           
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
             {states.map((state) => {
-              const stateStations = stations.filter(s => s["State Full"] === state);
+              const stateStations = usstations.filter(s => s["State Full"] === state);
               const abbr = stateAbbreviations[state];
               const lowestPrice = stateStations.length > 0 
                 ? Math.min(...stateStations

@@ -3,7 +3,8 @@ import { useParams, Link } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { Icon } from 'leaflet';
 import { MapPin, Phone, Clock, Calendar, Info, ChevronRight, Building2, Globe2 } from 'lucide-react';
-import { stations } from '../data/stations';
+import { usstations } from '../data/usstations';
+import { StationData } from '../types';
 import PriceChart from '../components/PriceChart';
 import NearbyStations from '../components/NearbyStations';
 import { stateAbbreviations } from '../utils/states';
@@ -21,7 +22,7 @@ const customIcon = new Icon({
 
 const StationPage = () => {
   const { id } = useParams();
-  const station = stations.find(s => s.Title.toLowerCase().replace(/\s+/g, '-') === id);
+  const station = usstations.find((s: StationData) => s.Title.toLowerCase().replace(/\s+/g, '-') === id);
 
   usePageTitle(
     station 
@@ -50,7 +51,7 @@ const StationPage = () => {
   }
 
   // Find nearby stations (within 50 miles)
-  const nearbyStations = stations.filter(s => {
+  const nearbyStations = usstations.filter((s: StationData) => {
     if (s.Title === station.Title) return false;
     
     const R = 3959; // Earth's radius in miles

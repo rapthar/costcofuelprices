@@ -9,7 +9,8 @@ import StateGrid from './components/StateGrid';
 import StationPage from './pages/StationPage';
 import StatePage from './pages/StatePage';
 import CityPage from './pages/CityPage';
-import MapPage from './pages/MapPage';
+import USMapPage from './pages/USMapPage';
+import CanadaMapPage from './pages/CanadaMapPage';
 import USGasStations from './pages/USGasStations';
 import CanadaGasStations from './pages/CanadaGasStations';
 import SearchPage from './pages/SearchPage';
@@ -42,12 +43,23 @@ function App() {
                 <div className="relative group">
                   <button className="flex items-center text-gray-600 hover:text-gray-900 gap-1">
                     <Globe2 className="w-4 h-4" />
+                    <span>Price Map</span>
+                  </button>
+                  <div className="absolute left-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                    <Link to="/us-map" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                      US Price Map
+                    </Link>
+                    <Link to="/canada-map" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                      Canada Price Map
+                    </Link>
+                  </div>
+                </div>
+                <div className="relative group">
+                  <button className="flex items-center text-gray-600 hover:text-gray-900 gap-1">
+                    <Globe2 className="w-4 h-4" />
                     <span>Locations</span>
                   </button>
                   <div className="absolute left-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                    <Link to="/map" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                      Interactive Map
-                    </Link>
                     <Link to="/us-gas-stations" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
                       Costco United States
                     </Link>
@@ -95,7 +107,8 @@ function App() {
                 </div>
               </div>
             } />
-            <Route path="/map" element={<MapPage />} />
+            <Route path="/us-map" element={<USMapPage />} />
+            <Route path="/canada-map" element={<CanadaMapPage />} />
             <Route path="/station/:id" element={<StationPage />} />
             <Route path="/state/:state" element={<StatePage />} />
             <Route path="/state/:state/:city" element={<CityPage />} />

@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { stations } from '../data/stations';
+import { usstations } from '../data/usstations';
+import { canadastations } from '../data/canadastations';
 import { MapPin } from 'lucide-react';
 import { stateAbbreviations } from '../utils/states';
 
 const PopularStations = () => {
   // Get 8 representative stations from different states with good price coverage
-  const popularStations = stations
+  const popularStations = [...usstations, ...canadastations]
     .filter(station => station.Regular !== "NA" && station["Gas Price Types"].includes("Regular"))
     .sort((a, b) => parseFloat(a.Regular.replace('$', '')) - parseFloat(b.Regular.replace('$', '')))
     .reduce((acc, station) => {
@@ -15,7 +16,7 @@ const PopularStations = () => {
         acc.push(station);
       }
       return acc;
-    }, [] as typeof stations);
+    }, [] as typeof usstations);
 
   return (
     <div className="py-16">

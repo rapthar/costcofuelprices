@@ -1,11 +1,12 @@
 import React from 'react';
-import { stations } from '../data/stations';
+import { usstations } from '../data/usstations';
+import { canadastations } from '../data/canadastations';
 import { stateAbbreviations } from '../utils/states';
 import { TrendingUp, TrendingDown, GaugeCircle } from 'lucide-react';
 
 const NationalAverage = () => {
   // Calculate national average for regular gas
-  const validPrices = stations
+  const validPrices = [...usstations, ...canadastations]
     .filter(station => station.Regular !== "NA")
     .map(station => parseFloat(station.Regular.replace('$', '')));
 
@@ -15,12 +16,12 @@ const NationalAverage = () => {
   const highestPrice = Math.max(...validPrices);
   const lowestPrice = Math.min(...validPrices);
 
-  const highestStation = stations.find(
+  const highestStation = [...usstations, ...canadastations].find(
     station => station.Regular !== "NA" && 
     parseFloat(station.Regular.replace('$', '')) === highestPrice
   );
 
-  const lowestStation = stations.find(
+  const lowestStation = [...usstations, ...canadastations].find(
     station => station.Regular !== "NA" && 
     parseFloat(station.Regular.replace('$', '')) === lowestPrice
   );

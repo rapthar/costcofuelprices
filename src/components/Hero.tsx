@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Search } from 'lucide-react';
-import { stations } from '../data/stations';
+import { usstations } from '../data/usstations';
+import { canadastations } from '../data/canadastations';
+import { stateAbbreviations } from '../utils/states';
 
 const Hero = () => {
   const navigate = useNavigate();
@@ -16,7 +18,7 @@ const Hero = () => {
       return;
     }
 
-    const results = stations
+    const results = [...usstations, ...canadastations]
       .filter(station => {
         const searchStr = query.toLowerCase();
         return (

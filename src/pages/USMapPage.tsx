@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { MapPin, ArrowUpDown, ChevronRight } from 'lucide-react';
 import Map from '../components/Map';
 import SearchBar from '../components/SearchBar';
@@ -7,11 +7,9 @@ import FilterPanel from '../components/FilterPanel';
 import StationList from '../components/StationList';
 import { usstations } from '../data/usstations';
 import { StationData } from '../types';
-import { stateAbbreviations } from '../utils/states';
 import { usePageTitle } from '../hooks/usePageTitle';
 
-const StatePage = () => {
-  const { state } = useParams();
+const USMapPage = () => {
   const [selectedStation, setSelectedStation] = useState<StationData | null>(null);
   const [filters, setFilters] = useState({
     fuelType: 'Regular',
@@ -20,26 +18,18 @@ const StatePage = () => {
   });
   const [searchQuery, setSearchQuery] = useState('');
 
-  const formattedState = state?.replace('-', ' ')
-    .split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-
   // Set page title and meta description
   usePageTitle(
-    `Costco Gas Prices ${formattedState}`,
-    `Find the best Costco gas prices in ${formattedState}. Compare fuel costs and locate the nearest Costco gas station in your area.`
-  );
-
-  // Get stations for this state
-  const stateStations = usstations.filter(station => 
-    station["State Full"].toLowerCase() === state?.replace('-', ' ').toLowerCase()
+    'US Costco Gas Prices Map - All Locations',
+    'Interactive map of all Costco gas stations in the United States. Compare fuel prices and find the nearest location to you.'
   );
 
   // Filter stations based on search and filters
-  const filteredStations = stateStations.filter(station => {
-    const matchesSearch = station.City.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         station.Address.toLowerCase().includes(searchQuery.toLowerCase());
+  const filteredStations = usstations.filter(station => {
+    const matchesSearch = 
+      station.City.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      station.Address.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      station["State Full"].toLowerCase().includes(searchQuery.toLowerCase());
     const matchesPrice = parseFloat(station[filters.fuelType].replace('$', '')) <= filters.maxPrice;
     return matchesSearch && matchesPrice;
   });
@@ -55,17 +45,17 @@ const StatePage = () => {
       <div className="flex items-center gap-2 text-sm text-gray-500 mb-8">
         <Link to="/" className="hover:text-gray-700">Home</Link>
         <ChevronRight className="w-4 h-4" />
-        <Link to="/us-gas-stations" className="hover:text-gray-700">US Gas Stations</Link>
+        <Link to="/price-map" className="hover:text-gray-700">Price Map</Link>
         <ChevronRight className="w-4 h-4" />
-        <span className="text-gray-900">{formattedState}</span>
+        <span className="text-gray-900">United States</span>
       </div>
 
       <h1 className="text-3xl font-bold text-gray-900 mb-4">
-        Costco Gas Prices in {formattedState}
+        US Costco Gas Price Map
       </h1>
 
       {/* Map */}
-      <div className="w-full h-[400px] mb-8 bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+      <div className="w-full h-[600px] mb-8 bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
         <Map
           stations={filteredStations}
           selectedStation={selectedStation}
@@ -122,4 +112,4 @@ const StatePage = () => {
   );
 };
 
-export default StatePage;
+export default USMapPage;
