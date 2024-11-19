@@ -1,0 +1,3 @@
+import { StationData } from '../types';
+
+export const usstations: StationData[] = 
