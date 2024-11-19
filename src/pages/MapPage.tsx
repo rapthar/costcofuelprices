@@ -5,11 +5,11 @@ import Map from '../components/Map';
 import SearchBar from '../components/SearchBar';
 import FilterPanel from '../components/FilterPanel';
 import StationList from '../components/StationList';
-import { canadastations } from '../data/canadastations';
+import { stations } from '../data/stations';
 import { StationData } from '../types';
 import { usePageTitle } from '../hooks/usePageTitle';
 
-const CanadaMapPage = () => {
+const MapPage = () => {
   const [selectedStation, setSelectedStation] = useState<StationData | null>(null);
   const [filters, setFilters] = useState({
     fuelType: 'Regular',
@@ -20,12 +20,12 @@ const CanadaMapPage = () => {
 
   // Set page title and meta description
   usePageTitle(
-    'Canada Costco Gas Prices Map - All Locations',
-    'Interactive map of all Costco gas stations in Canada. Compare fuel prices and find the nearest location to you.'
+    'Costco Gas Prices Map - All Locations',
+    'Interactive map of all Costco gas stations in the United States. Compare fuel prices and find the nearest location to you.'
   );
 
   // Filter stations based on search and filters
-  const filteredStations = canadastations.filter(station => {
+  const filteredStations = stations.filter(station => {
     const matchesSearch = 
       station.City.toLowerCase().includes(searchQuery.toLowerCase()) ||
       station.Address.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -45,13 +45,11 @@ const CanadaMapPage = () => {
       <div className="flex items-center gap-2 text-sm text-gray-500 mb-8">
         <Link to="/" className="hover:text-gray-700">Home</Link>
         <ChevronRight className="w-4 h-4" />
-        <Link to="/price-map" className="hover:text-gray-700">Price Map</Link>
-        <ChevronRight className="w-4 h-4" />
-        <span className="text-gray-900">Canada</span>
+        <span className="text-gray-900">Gas Price Map</span>
       </div>
 
       <h1 className="text-3xl font-bold text-gray-900 mb-4">
-        Canada Costco Gas Price Map
+        Costco Gas Price Map
       </h1>
 
       {/* Map */}
@@ -112,4 +110,4 @@ const CanadaMapPage = () => {
   );
 };
 
-export default CanadaMapPage;
+export default MapPage;

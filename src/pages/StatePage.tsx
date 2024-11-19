@@ -5,7 +5,7 @@ import Map from '../components/Map';
 import SearchBar from '../components/SearchBar';
 import FilterPanel from '../components/FilterPanel';
 import StationList from '../components/StationList';
-import { usstations } from '../data/usstations';
+import { stations } from '../data/stations';
 import { StationData } from '../types';
 import { stateAbbreviations } from '../utils/states';
 import { usePageTitle } from '../hooks/usePageTitle';
@@ -32,7 +32,7 @@ const StatePage = () => {
   );
 
   // Get stations for this state
-  const stateStations = usstations.filter(station => 
+  const stateStations = stations.filter(station => 
     station["State Full"].toLowerCase() === state?.replace('-', ' ').toLowerCase()
   );
 

@@ -5,7 +5,7 @@ import Map from '../components/Map';
 import SearchBar from '../components/SearchBar';
 import FilterPanel from '../components/FilterPanel';
 import StationList from '../components/StationList';
-import { usstations } from '../data/usstations';
+import { stations } from '../data/stations';
 import { StationData } from '../types';
 import { stateAbbreviations } from '../utils/states';
 import { usePageTitle } from '../hooks/usePageTitle';
@@ -37,7 +37,7 @@ const CityPage = () => {
   );
 
   // Get stations for this city
-  const cityStations = usstations.filter(station => 
+  const cityStations = stations.filter(station => 
     station.City.toLowerCase() === city?.replace('-', ' ').toLowerCase() &&
     station["State Full"].toLowerCase() === state?.replace('-', ' ').toLowerCase()
   );
