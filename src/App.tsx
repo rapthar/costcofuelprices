@@ -20,6 +20,7 @@ import TermsPage from './pages/TermsPage';
 import PrivacyPage from './pages/PrivacyPage';
 import FAQPage from './pages/FAQPage';
 import ContactPage from './pages/ContactPage';
+import CanadianStationPage from './pages/CanadianStationPage';
 import { Home, Globe2, Wrench, Mail, Search } from 'lucide-react';
 
 function App() {
@@ -119,8 +120,9 @@ function App() {
             <Route path="/canada/:state/:city" element={<CityPage />} />
             <Route path="/canada/:state" element={<StatePage />} />
             
-            {/* Station Route */}
-            <Route path="/station/:country/:id" element={<StationPage />} />
+            {/* Station Routes */}
+            <Route path="/station/costco-gas-in-:id" element={<CanadianStationPage />} />
+            <Route path="/station/:id" element={<StationPage />} />
             
             {/* Other Routes */}
             <Route path="/search" element={<SearchPage />} />
