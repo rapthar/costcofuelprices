@@ -107,13 +107,22 @@ function App() {
                 </div>
               </div>
             } />
+            {/* US Routes */}
             <Route path="/us-map" element={<MapPage />} />
-            <Route path="/canada-map" element={<CanadaMapPage />} />
-            <Route path="/station/:id" element={<StationPage />} />
+            <Route path="/us-gas-stations" element={<USGasStations />} />
             <Route path="/state/:state" element={<StatePage />} />
             <Route path="/state/:state/:city" element={<CityPage />} />
-            <Route path="/us-gas-stations" element={<USGasStations />} />
+            
+            {/* Canada Routes */}
+            <Route path="/canada-map" element={<CanadaMapPage />} />
             <Route path="/canada-gas-stations" element={<CanadaGasStations />} />
+            <Route path="/canada/:state/:city" element={<CityPage />} />
+            <Route path="/canada/:state" element={<StatePage />} />
+            
+            {/* Station Route */}
+            <Route path="/station/:id" element={<StationPage />} />
+            
+            {/* Other Routes */}
             <Route path="/search" element={<SearchPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/disclaimer" element={<DisclaimerPage />} />

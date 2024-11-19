@@ -11,7 +11,8 @@ import { stateAbbreviations } from '../utils/states';
 import { usePageTitle } from '../hooks/usePageTitle';
 
 const CityPage = () => {
-  const { state, city, country } = useParams();
+  const { state, city } = useParams();
+  const isCanada = window.location.pathname.startsWith('/canada/');
   const [selectedStation, setSelectedStation] = useState<StationData | null>(null);
   const [filters, setFilters] = useState({
     fuelType: 'Regular',
@@ -32,12 +33,12 @@ const CityPage = () => {
 
   // Set page title and meta description
   usePageTitle(
-    `Costco Gas Prices ${formattedCity}, ${formattedState}${country === 'canada' ? ', Canada' : ''}`,
-    `Find current Costco gas prices in ${formattedCity}, ${formattedState}${country === 'canada' ? ', Canada' : ''}. Compare fuel costs and get directions to your nearest Costco gas station.`
+    `Costco Gas Prices ${formattedCity}, ${formattedState}${isCanada ? ', Canada' : ''}`,
+    `Find current Costco gas prices in ${formattedCity}, ${formattedState}${isCanada ? ', Canada' : ''}. Compare fuel costs and get directions to your nearest Costco gas station.`
   );
 
   // Get stations for this city
-  const cityStations = country === 'canada' 
+  const cityStations = isCanada
     ? canadaStations[0].filter(station => 
         station.City.toLowerCase() === city?.replace('-', ' ').toLowerCase() &&
         station["State Full"].toLowerCase() === state?.replace('-', ' ').toLowerCase()
@@ -66,9 +67,13 @@ const CityPage = () => {
       <div className="flex items-center gap-2 text-sm text-gray-500 mb-8">
         <Link to="/" className="hover:text-gray-700">Home</Link>
         <ChevronRight className="w-4 h-4" />
-        <Link to="/us-gas-stations" className="hover:text-gray-700">US Gas Stations</Link>
+        <Link to={isCanada ? "/canada-gas-stations" : "/us-gas-stations"} className="hover:text-gray-700">
+          {isCanada ? 'Canada Gas Stations' : 'US Gas Stations'}
+        </Link>
         <ChevronRight className="w-4 h-4" />
-        <Link to={`/state/${state}`} className="hover:text-gray-700">{formattedState}</Link>
+        <Link to={`${isCanada ? '/canada' : '/state'}/${state}`} className="hover:text-gray-700">
+          {formattedState}
+        </Link>
         <ChevronRight className="w-4 h-4" />
         <span className="text-gray-900">{formattedCity}</span>
       </div>
