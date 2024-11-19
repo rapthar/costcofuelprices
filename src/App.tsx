@@ -39,15 +39,16 @@ function App() {
                   <Home className="w-4 h-4" />
                   <span>Home</span>
                 </Link>
+                <Link to="/map" className="flex items-center text-gray-600 hover:text-gray-900 gap-1">
+                  <Globe2 className="w-4 h-4" />
+                  <span>Map</span>
+                </Link>
                 <div className="relative group">
                   <button className="flex items-center text-gray-600 hover:text-gray-900 gap-1">
                     <Globe2 className="w-4 h-4" />
                     <span>Locations</span>
                   </button>
                   <div className="absolute left-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                    <Link to="/map" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                      Interactive Map
-                    </Link>
                     <Link to="/us-gas-stations" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
                       Costco United States
                     </Link>
