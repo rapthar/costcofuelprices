@@ -11,7 +11,7 @@ interface Props {
 const NearbyStations: React.FC<Props> = ({ stations, isCanada = false }) => {
   const getStationId = (station: any) => {
     if (isCanada) {
-      return `${station["Store Name"]}-${station.City}-${station["State Full"]}`.toLowerCase().replace(/\s+/g, '-');
+      return `costco-gas-in-${station.City.toLowerCase()}-${station.Address.toLowerCase()}`.replace(/\s+/g, '-');
     }
     return station.Title.toLowerCase().replace(/\s+/g, '-');
   };
@@ -21,7 +21,7 @@ const NearbyStations: React.FC<Props> = ({ stations, isCanada = false }) => {
       {stations.map((station, index) => (
         <Link
           key={index}
-          to={`/${isCanada ? 'canada' : 'state'}/${station["State Full"].toLowerCase().replace(/\s+/g, '-')}/${station.City.toLowerCase().replace(/\s+/g, '-')}/${getStationId(station)}`}
+          to={`/station/${getStationId(station)}`}
           className="block bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors"
         >
           <div className="flex items-start gap-3">

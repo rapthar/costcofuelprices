@@ -26,7 +26,7 @@ const StationPage = () => {
 
   const getStationId = (station: any) => {
     if (isCanada) {
-      return `${station["Store Name"]}-${station.City}-${station["State Full"]}`.toLowerCase().replace(/\s+/g, '-');
+      return `costco-gas-in-${station.City.toLowerCase()}-${station.Address.toLowerCase()}`.replace(/\s+/g, '-');
     }
     return station.Title.toLowerCase().replace(/\s+/g, '-');
   };
@@ -34,7 +34,7 @@ const StationPage = () => {
   // Find station based on country
   const station = isCanada 
     ? canadaStations[0].find(s => getStationId(s) === id)
-    : stations.find(s => getStationId(s) === id);
+    : stations.find(s => s.Title.toLowerCase().replace(/\s+/g, '-') === id);
 
   usePageTitle(
     station 

@@ -18,7 +18,7 @@ const CanadianStationList: React.FC<CanadianStationListProps> = ({
   fuelType = 'Regular'
 }) => {
   const getStationId = (station: StationData) => {
-    return `${station["Store Name"]}-${station.City}-${station["State Full"]}`.toLowerCase().replace(/\s+/g, '-');
+    return `costco-gas-in-${station.City.toLowerCase()}-${station.Address.toLowerCase()}`.replace(/\s+/g, '-');
   };
 
   return (
@@ -36,7 +36,7 @@ const CanadianStationList: React.FC<CanadianStationListProps> = ({
           <div className="flex justify-between items-start">
             <div>
               <Link 
-                to={`/canada/${station["State Full"].toLowerCase().replace(/\s+/g, '-')}/${station.City.toLowerCase().replace(/\s+/g, '-')}/${getStationId(station)}`}
+                to={`/station/${getStationId(station)}`}
                 className="inline-block hover:text-blue-600 transition-colors"
                 onClick={(e) => e.stopPropagation()}
               >
