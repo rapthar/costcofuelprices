@@ -23,14 +23,18 @@ const customIcon = new Icon({
 const StationPage = () => {
   const { id, country } = useParams();
   const isCanada = country === 'canada';
-  
+
+  const getStationId = (station: any) => {
+    if (isCanada) {
+      return `${station["Store Name"]}-${station.City}-${station["State Full"]}`.toLowerCase().replace(/\s+/g, '-');
+    }
+    return station.Title.toLowerCase().replace(/\s+/g, '-');
+  };
+
   // Find station based on country
   const station = isCanada 
-    ? canadaStations[0].find(s => {
-        const stationId = `${s["Store Name"]}-${s.City}-${s["State Full"]}`.toLowerCase().replace(/\s+/g, '-');
-        return stationId === id;
-      })
-    : stations.find(s => s.Title.toLowerCase().replace(/\s+/g, '-') === id);
+    ? canadaStations[0].find(s => getStationId(s) === id)
+    : stations.find(s => getStationId(s) === id);
 
   usePageTitle(
     station 
@@ -61,7 +65,7 @@ const StationPage = () => {
   // Find nearby stations (within 50 miles)
   const allStations = isCanada ? canadaStations[0] : stations;
   const nearbyStations = allStations.filter(s => {
-    if (s.Title === station.Title) return false;
+    if (getStationId(s) === getStationId(station)) return false;
     
     const R = 3959; // Earth's radius in miles
     const lat1 = station.Latitude * Math.PI / 180;
