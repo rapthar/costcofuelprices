@@ -54,13 +54,15 @@ const CanadaMapPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold text-gray-900">Costco Canada Gas Prices Map</h1>
-            <button
-              onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-              className="flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-            >
-              <ArrowUpDown className="w-4 h-4 mr-2" />
-              Sort by Price
-            </button>
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => setSortOrder(order => order === 'asc' ? 'desc' : 'asc')}
+                className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900"
+              >
+                <ArrowUpDown className="w-4 h-4" />
+                Sort by Price ({sortOrder === 'asc' ? 'Low to High' : 'High to Low'})
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -71,29 +73,28 @@ const CanadaMapPage = () => {
           {/* Left Column - Search and List */}
           <div className="space-y-6">
             <SearchBar
-              searchQuery={searchQuery}
-              setSearchQuery={setSearchQuery}
+              value={searchQuery}
+              onChange={setSearchQuery}
               placeholder="Search by city, province, or store name..."
             />
             <FilterPanel />
             <StationList
               stations={sortedStations}
-              selectedStation={selectedStation}
               onStationClick={handleStationClick}
               onStationSelect={handleStationSelect}
+              selectedStation={selectedStation}
             />
           </div>
 
           {/* Right Column - Map */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-lg shadow-lg overflow-hidden h-[800px]">
+            <div className="bg-white rounded-lg shadow-sm overflow-hidden">
               <Map
                 stations={sortedStations}
                 selectedStation={selectedStation}
                 onStationClick={handleStationClick}
-                onStationSelect={handleStationSelect}
-                center={[56.1304, -106.3468]} // Center of Canada's populated regions
-                zoom={2.5} // Adjusted zoom level as requested
+                center={{ lat: 56.1304, lng: -106.3468 }} // Center of Canada
+                zoom={4}
               />
             </div>
           </div>
