@@ -1,5 +1,6 @@
 import React from 'react';
 import { canadaStations } from '../data';
+import { formatCADPrice } from '../utils/currency';
 
 const CanadianAverage = () => {
   const averagePrice = React.useMemo(() => {
@@ -10,10 +11,10 @@ const CanadianAverage = () => {
     if (prices.length === 0) return null;
     
     const sum = prices.reduce((acc, price) => acc + parseFloat(price), 0);
-    return (sum / prices.length).toFixed(3);
+    return sum / prices.length;
   }, []);
 
-  if (!averagePrice) return null;
+  if (averagePrice === null) return null;
 
   return (
     <div className="bg-white">
@@ -24,7 +25,7 @@ const CanadianAverage = () => {
           </h2>
           <div className="flex items-baseline gap-2">
             <div className="text-3xl font-bold text-blue-600">
-              ${averagePrice}
+              {formatCADPrice(averagePrice)}
             </div>
             <div className="text-gray-500">per litre</div>
           </div>

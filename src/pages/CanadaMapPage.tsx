@@ -4,10 +4,11 @@ import { MapPin, ArrowUpDown, ChevronRight } from 'lucide-react';
 import Map from '../components/Map';
 import SearchBar from '../components/SearchBar';
 import FilterPanel from '../components/FilterPanel';
-import StationList from '../components/StationList';
+import CanadianStationList from '../components/CanadianStationList';
 import { canadaStations } from '../data';
 import { StationData } from '../types';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { formatCADPrice } from '../utils/currency';
 
 const CanadaMapPage = () => {
   const [selectedStation, setSelectedStation] = useState<StationData | null>(null);
@@ -68,7 +69,7 @@ const CanadaMapPage = () => {
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
           <p className="text-sm text-gray-500">Average {filters.fuelType} Price</p>
           <p className="text-2xl font-bold text-green-600">
-            ${averagePrice.toFixed(3)}/L
+            {formatCADPrice(averagePrice)}/L
           </p>
         </div>
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
@@ -100,7 +101,7 @@ const CanadaMapPage = () => {
         <div className="lg:col-span-2 space-y-6">
           {/* Station List */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-            <StationList
+            <CanadianStationList
               stations={filteredStations}
               selectedStation={selectedStation}
               onStationSelect={setSelectedStation}
