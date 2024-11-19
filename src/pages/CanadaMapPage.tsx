@@ -18,7 +18,7 @@ const CanadaMapPage = () => {
   usePageTitle('Costco Canada Gas Prices Map - Find Cheap Fuel Near You');
 
   // Filter stations based on search query
-  const filteredStations = canadaStations.filter(station => {
+  const filteredStations = canadaStations[0].filter(station => {
     const searchLower = searchQuery.toLowerCase();
     return (
       station.City.toLowerCase().includes(searchLower) ||
@@ -29,8 +29,11 @@ const CanadaMapPage = () => {
 
   // Sort stations based on price
   const sortedStations = [...filteredStations].sort((a, b) => {
-    const priceA = parseFloat(a.Regular.replace('$', ''));
-    const priceB = parseFloat(b.Regular.replace('$', ''));
+    if (a.Regular === 'NA' && b.Regular === 'NA') return 0;
+    if (a.Regular === 'NA') return 1;
+    if (b.Regular === 'NA') return -1;
+    const priceA = parseFloat(a.Regular.replace('$', '') || '0');
+    const priceB = parseFloat(b.Regular.replace('$', '') || '0');
     return sortOrder === 'asc' ? priceA - priceB : priceB - priceA;
   });
 
@@ -39,7 +42,9 @@ const CanadaMapPage = () => {
   };
 
   const handleStationSelect = (station: StationData) => {
-    navigate(`/station/${station['Store Name'].toLowerCase().replace(/\s+/g, '-')}`);
+    const stateSlug = station['State Full'].toLowerCase().replace(/\s+/g, '-');
+    const citySlug = station.City.toLowerCase().replace(/\s+/g, '-');
+    navigate(`/canada/${stateSlug}/${citySlug}`);
   };
 
   return (

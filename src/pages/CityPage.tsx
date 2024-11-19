@@ -5,13 +5,13 @@ import Map from '../components/Map';
 import SearchBar from '../components/SearchBar';
 import FilterPanel from '../components/FilterPanel';
 import StationList from '../components/StationList';
-import { stations } from '../data';
+import { stations, canadaStations } from '../data';
 import { StationData } from '../types';
 import { stateAbbreviations } from '../utils/states';
 import { usePageTitle } from '../hooks/usePageTitle';
 
 const CityPage = () => {
-  const { state, city } = useParams();
+  const { state, city, country } = useParams();
   const [selectedStation, setSelectedStation] = useState<StationData | null>(null);
   const [filters, setFilters] = useState({
     fuelType: 'Regular',
@@ -32,20 +32,26 @@ const CityPage = () => {
 
   // Set page title and meta description
   usePageTitle(
-    `Costco Gas Prices ${formattedCity}, ${formattedState}`,
-    `Find current Costco gas prices in ${formattedCity}, ${formattedState}. Compare fuel costs and get directions to your nearest Costco gas station.`
+    `Costco Gas Prices ${formattedCity}, ${formattedState}${country === 'canada' ? ', Canada' : ''}`,
+    `Find current Costco gas prices in ${formattedCity}, ${formattedState}${country === 'canada' ? ', Canada' : ''}. Compare fuel costs and get directions to your nearest Costco gas station.`
   );
 
   // Get stations for this city
-  const cityStations = stations.filter(station => 
-    station.City.toLowerCase() === city?.replace('-', ' ').toLowerCase() &&
-    station["State Full"].toLowerCase() === state?.replace('-', ' ').toLowerCase()
-  );
+  const cityStations = country === 'canada' 
+    ? canadaStations[0].filter(station => 
+        station.City.toLowerCase() === city?.replace('-', ' ').toLowerCase() &&
+        station["State Full"].toLowerCase() === state?.replace('-', ' ').toLowerCase()
+      )
+    : stations.filter(station => 
+        station.City.toLowerCase() === city?.replace('-', ' ').toLowerCase() &&
+        station["State Full"].toLowerCase() === state?.replace('-', ' ').toLowerCase()
+      );
 
   // Filter stations based on search and filters
   const filteredStations = cityStations.filter(station => {
     const matchesSearch = station.Address.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesPrice = parseFloat(station[filters.fuelType].replace('$', '')) <= filters.maxPrice;
+    if (station[filters.fuelType] === 'NA') return matchesSearch;
+    const matchesPrice = parseFloat(station[filters.fuelType].replace('$', '') || '0') <= filters.maxPrice;
     return matchesSearch && matchesPrice;
   });
 

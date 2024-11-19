@@ -5,13 +5,13 @@ import Map from '../components/Map';
 import SearchBar from '../components/SearchBar';
 import FilterPanel from '../components/FilterPanel';
 import StationList from '../components/StationList';
-import { stations } from '../data';
+import { stations, canadaStations } from '../data';
 import { StationData } from '../types';
 import { stateAbbreviations } from '../utils/states';
 import { usePageTitle } from '../hooks/usePageTitle';
 
 const StatePage = () => {
-  const { state } = useParams();
+  const { state, country } = useParams();
   const [selectedStation, setSelectedStation] = useState<StationData | null>(null);
   const [filters, setFilters] = useState({
     fuelType: 'Regular',
@@ -27,27 +27,32 @@ const StatePage = () => {
 
   // Set page title and meta description
   usePageTitle(
-    `Costco Gas Prices ${formattedState}`,
-    `Find the best Costco gas prices in ${formattedState}. Compare fuel costs and locate the nearest Costco gas station in your area.`
+    `Costco Gas Prices ${formattedState}${country === 'canada' ? ', Canada' : ''}`,
+    `Find the best Costco gas prices in ${formattedState}${country === 'canada' ? ', Canada' : ''}. Compare fuel costs and locate the nearest Costco gas station in your area.`
   );
 
-  // Get stations for this state
-  const stateStations = stations.filter(station => 
-    station["State Full"].toLowerCase() === state?.replace('-', ' ').toLowerCase()
-  );
+  // Get stations for this state/province
+  const stateStations = country === 'canada'
+    ? canadaStations[0].filter(station => 
+        station["State Full"].toLowerCase() === state?.replace('-', ' ').toLowerCase()
+      )
+    : stations.filter(station => 
+        station["State Full"].toLowerCase() === state?.replace('-', ' ').toLowerCase()
+      );
 
   // Filter stations based on search and filters
   const filteredStations = stateStations.filter(station => {
     const matchesSearch = station.City.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          station.Address.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesPrice = parseFloat(station[filters.fuelType].replace('$', '')) <= filters.maxPrice;
+    if (station[filters.fuelType] === 'NA') return matchesSearch;
+    const matchesPrice = parseFloat(station[filters.fuelType].replace('$', '') || '0') <= filters.maxPrice;
     return matchesSearch && matchesPrice;
   });
 
   const averagePrice = filteredStations
     .filter(s => s[filters.fuelType] !== "NA")
-    .reduce((acc, station) => acc + parseFloat(station[filters.fuelType].replace('$', '')), 0) / 
-    filteredStations.length;
+    .reduce((acc, station) => acc + parseFloat(station[filters.fuelType].replace('$', '') || '0'), 0) / 
+    filteredStations.filter(s => s[filters.fuelType] !== "NA").length || 0;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
