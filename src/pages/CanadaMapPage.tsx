@@ -87,8 +87,8 @@ const CanadaMapPage = () => {
                 selectedStation={selectedStation}
                 onStationClick={handleStationClick}
                 onStationSelect={handleStationSelect}
-                center={[56.1304, -106.3468]} // Center of Canada
-                zoom={4}
+                center={[62.8282, -95.5795]} // Adjusted center point for better Canada coverage
+                zoom={3} // Zoomed out for better visibility
               />
             </div>
           </div>
