@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { Icon } from 'leaflet';
 import { MapPin, Phone, Clock, Calendar, Info, ChevronRight, Building2, Globe2 } from 'lucide-react';
-import { stations } from '../data/stations';
+import { stations } from '../data';
 import PriceChart from '../components/PriceChart';
 import NearbyStations from '../components/NearbyStations';
 import { stateAbbreviations } from '../utils/states';

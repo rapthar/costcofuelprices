@@ -1,5 +1,5 @@
 import React from 'react';
-import { stations } from '../data/stations';
+import { stations } from '../data';
 import { stateAbbreviations } from '../utils/states';
 import { TrendingUp, TrendingDown, GaugeCircle } from 'lucide-react';
 

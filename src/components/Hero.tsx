@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search } from 'lucide-react';
-import { stations } from '../data/stations';
+import { stations } from '../data';
 
 const Hero = () => {
   const navigate = useNavigate();

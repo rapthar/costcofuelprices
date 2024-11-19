@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { stations } from '../data/stations';
+import { stations } from '../data';
 import { MapPin } from 'lucide-react';
 import { stateAbbreviations } from '../utils/states';
 

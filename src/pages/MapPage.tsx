@@ -5,7 +5,7 @@ import Map from '../components/Map';
 import SearchBar from '../components/SearchBar';
 import FilterPanel from '../components/FilterPanel';
 import StationList from '../components/StationList';
-import { stations } from '../data/stations';
+import { stations } from '../data';
 import { StationData } from '../types';
 import { usePageTitle } from '../hooks/usePageTitle';
 
