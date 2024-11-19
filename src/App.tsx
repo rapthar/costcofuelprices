@@ -20,7 +20,6 @@ import TermsPage from './pages/TermsPage';
 import PrivacyPage from './pages/PrivacyPage';
 import FAQPage from './pages/FAQPage';
 import ContactPage from './pages/ContactPage';
-import CanadianStationPage from './pages/CanadianStationPage';
 import { Home, Globe2, Wrench, Mail, Search } from 'lucide-react';
 
 function App() {
@@ -108,23 +107,13 @@ function App() {
                 </div>
               </div>
             } />
-            {/* US Routes */}
             <Route path="/us-map" element={<MapPage />} />
-            <Route path="/us-gas-stations" element={<USGasStations />} />
+            <Route path="/canada-map" element={<CanadaMapPage />} />
+            <Route path="/station/:id" element={<StationPage />} />
             <Route path="/state/:state" element={<StatePage />} />
             <Route path="/state/:state/:city" element={<CityPage />} />
-            
-            {/* Canada Routes */}
-            <Route path="/canada-map" element={<CanadaMapPage />} />
+            <Route path="/us-gas-stations" element={<USGasStations />} />
             <Route path="/canada-gas-stations" element={<CanadaGasStations />} />
-            <Route path="/canada/:province/:city" element={<CityPage />} />
-            <Route path="/canada/:province" element={<StatePage />} />
-            
-            {/* Station Routes */}
-            <Route path="/station/costco-gas-in-:id" element={<CanadianStationPage />} />
-            <Route path="/station/:id" element={<StationPage />} />
-            
-            {/* Other Routes */}
             <Route path="/search" element={<SearchPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/disclaimer" element={<DisclaimerPage />} />

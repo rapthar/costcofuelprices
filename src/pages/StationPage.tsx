@@ -3,12 +3,11 @@ import { useParams, Link } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { Icon } from 'leaflet';
 import { MapPin, Phone, Clock, Calendar, Info, ChevronRight, Building2, Globe2 } from 'lucide-react';
-import { stations, canadaStations } from '../data';
+import { stations } from '../data';
 import PriceChart from '../components/PriceChart';
 import NearbyStations from '../components/NearbyStations';
 import { stateAbbreviations } from '../utils/states';
 import { usePageTitle } from '../hooks/usePageTitle';
-import { formatCADPrice } from '../utils/currency';
 import 'leaflet/dist/leaflet.css';
 
 const customIcon = new Icon({
@@ -22,28 +21,14 @@ const customIcon = new Icon({
 
 const StationPage = () => {
   const { id } = useParams();
-
-  // Determine if this is a Canadian station by checking the URL format
-  const isCanada = id?.includes('costco-gas-in-');
-
-  const getStationId = (station: any) => {
-    if (isCanada) {
-      return `costco-gas-in-${station.City.toLowerCase()}-${station.Address.toLowerCase()}`.replace(/\s+/g, '-');
-    }
-    return station.Title.toLowerCase().replace(/\s+/g, '-');
-  };
-
-  // Find station based on ID format
-  const station = isCanada 
-    ? canadaStations[0].find(s => getStationId(s) === id)
-    : stations.find(s => getStationId(s) === id);
+  const station = stations.find(s => s.Title.toLowerCase().replace(/\s+/g, '-') === id);
 
   usePageTitle(
     station 
-      ? `Costco - ${station.Address} - ${station.City}, ${isCanada ? station["State Full"] : stateAbbreviations[station["State Full"]]}`
+      ? `Costco - ${station["Street Address"]} - ${station.City}, ${stateAbbreviations[station["State Full"]]}`
       : 'Station Not Found - CostcoFuelPrices.com',
     station
-      ? `Current gas prices at Costco ${station["Store Name"]} located at ${station.Address}, ${station.City}, ${isCanada ? station["State Full"] : stateAbbreviations[station["State Full"]]}. Find the latest fuel costs and station information.`
+      ? `Current gas prices at Costco ${station["Store Name"]} located at ${station["Street Address"]}, ${station.City}, ${stateAbbreviations[station["State Full"]]}. Find the latest fuel costs and station information.`
       : 'The requested Costco gas station could not be found.'
   );
 
@@ -65,9 +50,8 @@ const StationPage = () => {
   }
 
   // Find nearby stations (within 50 miles)
-  const allStations = isCanada ? canadaStations[0] : stations;
-  const nearbyStations = allStations.filter(s => {
-    if (getStationId(s) === getStationId(station)) return false;
+  const nearbyStations = stations.filter(s => {
+    if (s.Title === station.Title) return false;
     
     const R = 3959; // Earth's radius in miles
     const lat1 = station.Latitude * Math.PI / 180;
@@ -85,30 +69,23 @@ const StationPage = () => {
     return distance <= 50;
   }).slice(0, 3);
 
-  const formatPrice = (price: string) => {
-    if (price === "NA" || !price) return "-";
-    return isCanada ? formatCADPrice(parseFloat(price)) : price;
-  };
-
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Breadcrumbs */}
       <div className="flex items-center gap-2 text-sm text-gray-500 mb-8">
         <Link to="/" className="hover:text-gray-700">Home</Link>
         <ChevronRight className="w-4 h-4" />
-        <Link to={isCanada ? "/canada-gas-stations" : "/us-gas-stations"} className="hover:text-gray-700">
-          {isCanada ? "Canada" : "US"} Gas Stations
-        </Link>
+        <Link to="/us-gas-stations" className="hover:text-gray-700">US Gas Stations</Link>
         <ChevronRight className="w-4 h-4" />
         <Link 
-          to={`/${isCanada ? 'canada' : 'state'}/${station["State Full"].toLowerCase().replace(/\s+/g, '-')}`}
+          to={`/state/${station["State Full"].toLowerCase().replace(/\s+/g, '-')}`}
           className="hover:text-gray-700"
         >
           {station["State Full"]}
         </Link>
         <ChevronRight className="w-4 h-4" />
         <Link 
-          to={`/${isCanada ? 'canada' : 'state'}/${station["State Full"].toLowerCase().replace(/\s+/g, '-')}/${station.City.toLowerCase().replace(/\s+/g, '-')}`}
+          to={`/state/${station["State Full"].toLowerCase().replace(/\s+/g, '-')}/${station.City.toLowerCase().replace(/\s+/g, '-')}`}
           className="hover:text-gray-700"
         >
           {station.City}
@@ -129,14 +106,14 @@ const StationPage = () => {
                 <h1 className="text-2xl font-bold text-gray-900">Costco {station["Store Name"]}</h1>
                 <div className="flex items-center gap-4 mt-1">
                   <Link
-                    to={`/${isCanada ? 'canada' : 'state'}/${station["State Full"].toLowerCase().replace(/\s+/g, '-')}/${station.City.toLowerCase().replace(/\s+/g, '-')}`}
+                    to={`/state/${station["State Full"].toLowerCase().replace(/\s+/g, '-')}/${station.City.toLowerCase().replace(/\s+/g, '-')}`}
                     className="flex items-center text-sm text-gray-500 hover:text-blue-600"
                   >
                     <Building2 className="w-4 h-4 mr-1" />
                     {station.City}
                   </Link>
                   <Link
-                    to={`/${isCanada ? 'canada' : 'state'}/${station["State Full"].toLowerCase().replace(/\s+/g, '-')}`}
+                    to={`/state/${station["State Full"].toLowerCase().replace(/\s+/g, '-')}`}
                     className="flex items-center text-sm text-gray-500 hover:text-blue-600"
                   >
                     <Globe2 className="w-4 h-4 mr-1" />
@@ -149,15 +126,17 @@ const StationPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
               <div className="bg-gray-50 rounded-lg p-4">
                 <p className="text-sm text-gray-600">Regular</p>
-                <p className="text-2xl font-bold text-green-600">{formatPrice(station.Regular)}</p>
+                <p className="text-2xl font-bold text-green-600">{station.Regular}</p>
               </div>
               <div className="bg-gray-50 rounded-lg p-4">
                 <p className="text-sm text-gray-600">Premium</p>
-                <p className="text-2xl font-bold text-green-600">{formatPrice(station.Premium)}</p>
+                <p className="text-2xl font-bold text-green-600">{station.Premium}</p>
               </div>
               <div className="bg-gray-50 rounded-lg p-4">
                 <p className="text-sm text-gray-600">Diesel</p>
-                <p className="text-2xl font-bold text-green-600">{formatPrice(station.Diesel)}</p>
+                <p className="text-2xl font-bold text-green-600">
+                  {station.Diesel !== "NA" ? station.Diesel : "-"}
+                </p>
               </div>
             </div>
 
@@ -202,7 +181,7 @@ const StationPage = () => {
 
           <div className="mt-8 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <h2 className="text-xl font-bold text-gray-900 mb-4">Price History</h2>
-            <PriceChart station={station} isCanada={isCanada} />
+            <PriceChart station={station} />
           </div>
         </div>
 
@@ -220,27 +199,29 @@ const StationPage = () => {
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <Marker position={[station.Latitude, station.Longitude]} icon={customIcon}>
+                <Marker
+                  position={[station.Latitude, station.Longitude]}
+                  icon={customIcon}
+                >
                   <Popup>
-                    <div className="text-sm">
-                      <p className="font-medium">{station["Store Name"]}</p>
-                      <p>{station.Address}</p>
-                      <p>{station.City}, {isCanada ? station["State Full"] : stateAbbreviations[station["State Full"]]}</p>
+                    <div className="p-2">
+                      <h3 className="font-semibold">Costco {station["Store Name"]}</h3>
+                      <p className="text-sm text-gray-600">{station.Address}</p>
                     </div>
                   </Popup>
                 </Marker>
               </MapContainer>
             </div>
           </div>
-
-          {nearbyStations.length > 0 && (
-            <div className="mt-8 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">Nearby Stations</h2>
-              <NearbyStations stations={nearbyStations} isCanada={isCanada} />
-            </div>
-          )}
         </div>
       </div>
+
+      {/* Nearby Stations */}
+      {nearbyStations.length > 0 && (
+        <div className="mt-8">
+          <NearbyStations stations={nearbyStations} currentStation={station} />
+        </div>
+      )}
     </div>
   );
 };

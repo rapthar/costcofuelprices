@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
-import ProvinceGrid from '../components/ProvinceGrid';
-import CanadianAverage from '../components/CanadianAverage';
 
 const CanadaGasStations = () => {
   React.useEffect(() => {
@@ -26,10 +24,24 @@ const CanadaGasStations = () => {
           Find the most up-to-date Costco gas prices across Canada. Compare prices, 
           find the nearest location, and save money on your next fill-up.
         </p>
-      </div>
 
-      <CanadianAverage />
-      <ProvinceGrid />
+        {/* Coming Soon Message */}
+        <div className="mt-12 bg-blue-50 rounded-lg p-8 text-center max-w-2xl mx-auto">
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">
+            Coming Soon to Canada
+          </h2>
+          <p className="text-gray-600 mb-4">
+            We're currently working on bringing Costco gas prices for Canadian locations. 
+            Check back soon for updates!
+          </p>
+          <Link
+            to="/"
+            className="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Return Home
+          </Link>
+        </div>
+      </div>
     </div>
   );
 };
