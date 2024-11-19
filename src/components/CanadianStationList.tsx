@@ -17,13 +17,17 @@ const CanadianStationList: React.FC<CanadianStationListProps> = ({
   onStationSelect,
   fuelType = 'Regular'
 }) => {
+  const getStationId = (station: StationData) => {
+    return `costco-gas-in-${station.City.toLowerCase()}-${station.Address.toLowerCase()}`.replace(/\s+/g, '-');
+  };
+
   return (
     <div className="space-y-4">
       {stations.map(station => (
         <div
-          key={station.Title}
+          key={station["Store Name"] + station.City}
           className={`p-4 rounded-lg border cursor-pointer transition-colors ${
-            selectedStation?.Title === station.Title
+            selectedStation?.["Store Name"] === station["Store Name"] && selectedStation?.City === station.City
               ? 'bg-blue-50 border-blue-200'
               : 'bg-white border-gray-200 hover:bg-gray-50'
           }`}
@@ -32,7 +36,7 @@ const CanadianStationList: React.FC<CanadianStationListProps> = ({
           <div className="flex justify-between items-start">
             <div>
               <Link 
-                to={`/canada/${station["State Full"].toLowerCase().replace(/\s+/g, '-')}/${station.City.toLowerCase().replace(/\s+/g, '-')}`}
+                to={`/station/${getStationId(station)}`}
                 className="inline-block hover:text-blue-600 transition-colors"
                 onClick={(e) => e.stopPropagation()}
               >
@@ -47,7 +51,7 @@ const CanadianStationList: React.FC<CanadianStationListProps> = ({
             </div>
             <div className="text-right">
               <p className="font-semibold text-green-600">
-                {formatCADPrice(station[fuelType])}
+                {formatCADPrice(parseFloat(station[fuelType]))}
               </p>
               <div className="flex items-center text-xs text-gray-500 mt-1">
                 <Clock className="h-3 w-3 mr-1" />
@@ -59,16 +63,16 @@ const CanadianStationList: React.FC<CanadianStationListProps> = ({
           <div className="mt-3 grid grid-cols-3 gap-2 text-sm">
             <div className="text-center p-2 bg-gray-50 rounded">
               <p className="text-gray-600">Regular</p>
-              <p className="font-semibold">{formatCADPrice(station.Regular)}</p>
+              <p className="font-semibold">{formatCADPrice(parseFloat(station.Regular))}</p>
             </div>
             <div className="text-center p-2 bg-gray-50 rounded">
               <p className="text-gray-600">Premium</p>
-              <p className="font-semibold">{formatCADPrice(station.Premium)}</p>
+              <p className="font-semibold">{formatCADPrice(parseFloat(station.Premium))}</p>
             </div>
             <div className="text-center p-2 bg-gray-50 rounded">
               <p className="text-gray-600">Diesel</p>
               <p className="font-semibold">
-                {station.Diesel !== "NA" ? formatCADPrice(station.Diesel) : "-"}
+                {station.Diesel !== "NA" ? formatCADPrice(parseFloat(station.Diesel)) : "-"}
               </p>
             </div>
           </div>

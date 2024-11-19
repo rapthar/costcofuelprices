@@ -120,7 +120,7 @@ function App() {
             <Route path="/canada/:state" element={<StatePage />} />
             
             {/* Station Route */}
-            <Route path="/station/:id" element={<StationPage />} />
+            <Route path="/station/:country/:id" element={<StationPage />} />
             
             {/* Other Routes */}
             <Route path="/search" element={<SearchPage />} />
