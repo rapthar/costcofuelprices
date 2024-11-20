@@ -17,6 +17,11 @@ const PopularStations = () => {
       return acc;
     }, [] as typeof stations);
 
+  const getStationUrl = (station: typeof stations[0]) => {
+    const streetAddress = station.Address.split(',')[0];
+    return `/station/us/costco-gas-in-${station.City.toLowerCase()}-${streetAddress.toLowerCase()}-${station.City.toLowerCase()}-${station["State Full"].toLowerCase()}-${station.Zipcode}`.replace(/\s+/g, '-');
+  };
+
   return (
     <div className="py-16">
       <h2 className="text-2xl font-bold text-gray-900 text-center mb-2">
@@ -30,7 +35,7 @@ const PopularStations = () => {
         {popularStations.map((station) => (
           <Link
             key={station.Title}
-            to={`/station/${station.Title.toLowerCase().replace(/\s+/g, '-')}`}
+            to={getStationUrl(station)}
             className="bg-white rounded-lg shadow-sm border border-gray-100 p-4 hover:shadow-md transition-shadow"
           >
             <div className="flex items-center gap-3 mb-3">
@@ -50,7 +55,11 @@ const PopularStations = () => {
                 <p className="text-xs text-gray-500">Regular</p>
                 <span className="text-lg font-bold text-green-600">{station.Regular}</span>
               </div>
-              <span className="text-sm text-gray-500">Updated 6h ago</span>
+              <span className="text-sm text-gray-500">Updated {new Date().toLocaleDateString('en-US', { 
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric'
+              })}</span>
             </div>
           </Link>
         ))}
