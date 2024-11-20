@@ -21,7 +21,7 @@ const StatePage = () => {
   });
   const [searchQuery, setSearchQuery] = useState('');
 
-  const formattedState = state?.replace('-', ' ')
+  const formattedState = state?.replace(/-/g, ' ')
     .split(' ')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
@@ -35,10 +35,10 @@ const StatePage = () => {
   // Get stations for this state/province
   const stateStations = isCanada
     ? canadaStations[0].filter(station => 
-        station["State Full"].toLowerCase() === state?.replace('-', ' ').toLowerCase()
+        station["State Full"].toLowerCase() === state?.replace(/-/g, ' ').toLowerCase()
       )
     : stations.filter(station => 
-        station["State Full"].toLowerCase() === state?.replace('-', ' ').toLowerCase()
+        station["State Full"].toLowerCase() === state?.replace(/-/g, ' ').toLowerCase()
       );
 
   // Filter stations based on search and filters
