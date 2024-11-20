@@ -44,7 +44,7 @@ const StationPage = () => {
 
   usePageTitle(
     station 
-      ? `Costco - ${station.Address}, ${station.City} - ${isCanada ? station["State Full"] : stateAbbreviations[station["State Full"]]}` 
+      ? `Costco - ${station["Street Address"]}, ${station.City} - ${isCanada ? station["State Full"] : stateAbbreviations[station["State Full"]]}` 
       : 'Station Not Found - CostcoFuelPrices.com',
     station
       ? `Current gas prices at Costco ${station["Store Name"]} located at ${station.Address}, ${station.City}, ${isCanada ? station["State Full"] : stateAbbreviations[station["State Full"]]}. Find the latest fuel costs and station information.`
