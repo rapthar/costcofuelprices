@@ -33,12 +33,20 @@ const StatePage = () => {
   );
 
   // Get stations for this state/province
+  const normalizedState = state?.replace(/-/g, ' ').toLowerCase();
+  console.log('URL state parameter:', state);
+  console.log('Normalized state:', normalizedState);
+  console.log('Is Canada:', isCanada);
+  console.log('Available provinces:', [...new Set(canadaStations[0].map(s => s["State Full"]))]);
+  
   const stateStations = isCanada
-    ? canadaStations[0].filter(station => 
-        station["State Full"].toLowerCase() === state?.replace(/-/g, ' ').toLowerCase()
-      )
+    ? canadaStations[0].filter(station => {
+        const stateMatch = station["State Full"].toLowerCase() === normalizedState;
+        console.log('Checking station:', station["State Full"], 'Match:', stateMatch);
+        return stateMatch;
+      })
     : stations.filter(station => 
-        station["State Full"].toLowerCase() === state?.replace(/-/g, ' ').toLowerCase()
+        station["State Full"].toLowerCase() === normalizedState
       );
 
   // Filter stations based on search and filters
