@@ -154,14 +154,38 @@ const StationPage = () => {
               <div className="bg-gray-50 rounded-lg p-4">
                 <p className="text-sm text-gray-600">Regular</p>
                 <p className="text-2xl font-bold text-green-600">{formatPrice(station.Regular)}</p>
+                <div className="flex items-center text-xs text-gray-500 mt-2">
+                  <Clock className="w-4 h-4 mr-1" />
+                  <span>Updated {new Date().toLocaleDateString('en-US', { 
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                  })}</span>
+                </div>
               </div>
               <div className="bg-gray-50 rounded-lg p-4">
                 <p className="text-sm text-gray-600">Premium</p>
                 <p className="text-2xl font-bold text-green-600">{formatPrice(station.Premium)}</p>
+                <div className="flex items-center text-xs text-gray-500 mt-2">
+                  <Clock className="w-4 h-4 mr-1" />
+                  <span>Updated {new Date().toLocaleDateString('en-US', { 
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                  })}</span>
+                </div>
               </div>
               <div className="bg-gray-50 rounded-lg p-4">
                 <p className="text-sm text-gray-600">Diesel</p>
                 <p className="text-2xl font-bold text-green-600">{formatPrice(station.Diesel)}</p>
+                <div className="flex items-center text-xs text-gray-500 mt-2">
+                  <Clock className="w-4 h-4 mr-1" />
+                  <span>Updated {new Date().toLocaleDateString('en-US', { 
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                  })}</span>
+                </div>
               </div>
             </div>
 
