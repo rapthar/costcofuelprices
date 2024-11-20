@@ -36,7 +36,11 @@ const StationPage = () => {
   // Find station based on ID format
   const station = isCanada 
     ? canadaStations[0].find(s => getStationId(s) === id)
-    : stations.find(s => s.Title.toLowerCase().replace(/\s+/g, '-') === id);
+    : stations.find(s => id && (
+        // Try both formats for US stations for backward compatibility
+        s.Title.toLowerCase().replace(/\s+/g, '-') === id ||
+        `costco-gas-in-${s.City.toLowerCase()}-${s.Address.toLowerCase()}`.replace(/\s+/g, '-') === id
+      ));
 
   usePageTitle(
     station 
