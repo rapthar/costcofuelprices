@@ -22,18 +22,23 @@ const customIcon = new Icon({
 });
 
 const Map: React.FC<MapProps> = ({ stations, selectedStation, onStationSelect }) => {
-  // Calculate center based on stations or default to US center
-  const center = stations.length > 0
+  // Filter out stations with invalid coordinates
+  const validStations = stations.filter(
+    station => !isNaN(station.Latitude) && !isNaN(station.Longitude)
+  );
+
+  // Calculate center based on valid stations or default to Ontario center
+  const center = validStations.length > 0
     ? {
-        lat: stations.reduce((sum, station) => sum + station.Latitude, 0) / stations.length,
-        lng: stations.reduce((sum, station) => sum + station.Longitude, 0) / stations.length
+        lat: validStations.reduce((sum, station) => sum + station.Latitude, 0) / validStations.length,
+        lng: validStations.reduce((sum, station) => sum + station.Longitude, 0) / validStations.length
       }
-    : { lat: 39.8283, lng: -98.5795 }; // US center
+    : { lat: 51.2538, lng: -85.3232 }; // Ontario center
   
   return (
     <MapContainer
       center={[center.lat, center.lng]}
-      zoom={stations.length > 0 ? 8 : 4}
+      zoom={validStations.length > 0 ? 8 : 4}
       className="w-full h-full rounded-lg"
     >
       <TileLayer
@@ -41,7 +46,7 @@ const Map: React.FC<MapProps> = ({ stations, selectedStation, onStationSelect })
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       
-      {stations.map(station => (
+      {validStations.map(station => (
         <Marker
           key={station.Title}
           position={[station.Latitude, station.Longitude]}
