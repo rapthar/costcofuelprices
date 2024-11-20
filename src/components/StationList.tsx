@@ -25,7 +25,7 @@ const StationList: React.FC<StationListProps> = ({ stations, selectedStation, on
           <div className="flex justify-between items-start">
             <div>
               <Link 
-                to={`/station/${window.location.pathname.startsWith('/canada') ? 'canada' : 'us'}/costco-gas-in-${station.City.toLowerCase()}-${station.Address.toLowerCase()}`.replace(/\s+/g, '-')}
+                to={`/station/${window.location.pathname.startsWith('/canada') ? 'canada' : 'us'}/costco-gas-in-${station.City.toLowerCase()}-${station.Address.split(',')[0].toLowerCase()}-${station.City.toLowerCase()}-${station["State Full"].toLowerCase()}-${station.Zipcode}`.replace(/\s+/g, '-')}
                 className="inline-block hover:text-blue-600 transition-colors"
                 onClick={(e) => e.stopPropagation()}
               >

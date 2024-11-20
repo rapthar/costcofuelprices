@@ -30,17 +30,18 @@ const StationPage = () => {
     if (isCanada) {
       return `costco-gas-in-${station.City.toLowerCase()}-${station.Address.toLowerCase()}`.replace(/\s+/g, '-');
     }
-    return station.Title.toLowerCase().replace(/\s+/g, '-');
+    const address = station.Address.split(',');
+    return `costco-gas-in-${station.City.toLowerCase()}-${address[0].toLowerCase()}`.replace(/\s+/g, '-');
   };
 
   // Find station based on ID format
   const station = isCanada 
     ? canadaStations[0].find(s => getStationId(s) === id)
-    : stations.find(s => id && (
-        // Try both formats for US stations for backward compatibility
-        s.Title.toLowerCase().replace(/\s+/g, '-') === id ||
-        `costco-gas-in-${s.City.toLowerCase()}-${s.Address.toLowerCase()}`.replace(/\s+/g, '-') === id
-      ));
+    : stations.find(s => {
+        const stationId = getStationId(s);
+        // Try both formats for US stations
+        return id === stationId || id.startsWith(stationId);
+      });
 
   usePageTitle(
     station 
