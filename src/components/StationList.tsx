@@ -10,6 +10,16 @@ interface StationListProps {
 }
 
 const StationList: React.FC<StationListProps> = ({ stations, selectedStation, onStationSelect }) => {
+  const getStationUrl = (station: StationData) => {
+    const isCanada = window.location.pathname.startsWith('/canada');
+    if (isCanada) {
+      return `/station/canada/costco-gas-in-${station.City.toLowerCase()}-${station.Address.toLowerCase()}`.replace(/\s+/g, '-');
+    }
+    // For US stations, create URL with full location info
+    const streetAddress = station.Address.split(',')[0];
+    return `/station/us/costco-gas-in-${station.City.toLowerCase()}-${streetAddress.toLowerCase()}-${station.City.toLowerCase()}-${station["State Full"].toLowerCase()}-${station.Zipcode}`.replace(/\s+/g, '-');
+  };
+
   return (
     <div className="space-y-4">
       {stations.map(station => (
@@ -25,7 +35,7 @@ const StationList: React.FC<StationListProps> = ({ stations, selectedStation, on
           <div className="flex justify-between items-start">
             <div>
               <Link 
-                to={`/station/${window.location.pathname.startsWith('/canada') ? 'canada' : 'us'}/costco-gas-in-${station.City.toLowerCase()}-${station.Address.split(',')[0].toLowerCase()}-${station.City.toLowerCase()}-${station["State Full"].toLowerCase()}-${station.Zipcode}`.replace(/\s+/g, '-')}
+                to={getStationUrl(station)}
                 className="inline-block hover:text-blue-600 transition-colors"
                 onClick={(e) => e.stopPropagation()}
               >
