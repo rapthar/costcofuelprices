@@ -118,7 +118,7 @@ const StationPage = () => {
           {station.City}
         </Link>
         <ChevronRight className="w-4 h-4" />
-        <span className="text-gray-900">{station["Store Name"]}</span>
+        <span className="text-gray-900">Costco {station.City}</span>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
