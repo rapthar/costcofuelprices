@@ -119,7 +119,7 @@ function App() {
             <Route path="/canada-gas-stations" element={<CanadaGasStations />} />
             <Route path="/canada/:state" element={<StatePage />} />
             <Route path="/canada/:state/:city" element={<CityPage />} />
-            <Route path="/station/canada/:id" element={<CanadaStationPage />} />
+            <Route path="/station/canada/:id" element={<StationPage />} />
             
             {/* Other Routes */}
             <Route path="/search" element={<SearchPage />} />
