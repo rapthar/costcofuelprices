@@ -22,56 +22,54 @@ const CanadianStationList: React.FC<CanadianStationListProps> = ({
   };
 
   return (
-    <div className="space-y-4">
+    <div className="divide-y divide-gray-200">
       {stations.map(station => (
         <div
           key={station["Store Name"] + station.City}
-          className={`p-4 rounded-lg border cursor-pointer transition-colors ${
+          className={`p-6 cursor-pointer transition-colors ${
             selectedStation?.["Store Name"] === station["Store Name"] && selectedStation?.City === station.City
-              ? 'bg-blue-50 border-blue-200'
-              : 'bg-white border-gray-200 hover:bg-gray-50'
+              ? 'bg-blue-50'
+              : 'hover:bg-gray-50'
           }`}
           onClick={() => onStationSelect(station)}
         >
           <div className="flex justify-between items-start">
             <div>
               <Link 
-                to={`/station/${getStationId(station)}`}
+                to={`/station/canada/${getStationId(station)}`}
                 className="inline-block hover:text-blue-600 transition-colors"
                 onClick={(e) => e.stopPropagation()}
               >
-                <h3 className="font-semibold">Costco {station["Store Name"]}</h3>
+                <h3 className="text-lg font-semibold text-gray-900">Costco {station["Store Name"]}</h3>
               </Link>
-              <div
-                className="flex items-center text-sm text-gray-500 mt-1"
-              >
+              <div className="flex items-center text-sm text-gray-500 mt-2">
                 <MapPin className="h-4 w-4 mr-1 flex-shrink-0" />
-                <p>{station.Address}</p>
+                <p>{station.Address}, {station.City}, {station["State Full"]}</p>
               </div>
             </div>
             <div className="text-right">
-              <p className="font-semibold text-green-600">
+              <p className="text-xl font-bold text-green-600">
                 {formatCADPrice(parseFloat(station[fuelType]))}
               </p>
-              <div className="flex items-center text-xs text-gray-500 mt-1">
-                <Clock className="h-3 w-3 mr-1" />
+              <div className="flex items-center text-sm text-gray-500 mt-2">
+                <Clock className="h-4 w-4 mr-1" />
                 <p>Updated {station["Last Updated"]}</p>
               </div>
             </div>
           </div>
           
-          <div className="mt-3 grid grid-cols-3 gap-2 text-sm">
-            <div className="text-center p-2 bg-gray-50 rounded">
-              <p className="text-gray-600">Regular</p>
-              <p className="font-semibold">{formatCADPrice(parseFloat(station.Regular))}</p>
+          <div className="mt-4 grid grid-cols-3 gap-4">
+            <div className="text-center p-3 bg-gray-50 rounded-lg">
+              <p className="text-sm text-gray-600">Regular</p>
+              <p className="font-semibold text-gray-900">{formatCADPrice(parseFloat(station.Regular))}</p>
             </div>
-            <div className="text-center p-2 bg-gray-50 rounded">
-              <p className="text-gray-600">Premium</p>
-              <p className="font-semibold">{formatCADPrice(parseFloat(station.Premium))}</p>
+            <div className="text-center p-3 bg-gray-50 rounded-lg">
+              <p className="text-sm text-gray-600">Premium</p>
+              <p className="font-semibold text-gray-900">{formatCADPrice(parseFloat(station.Premium))}</p>
             </div>
-            <div className="text-center p-2 bg-gray-50 rounded">
-              <p className="text-gray-600">Diesel</p>
-              <p className="font-semibold">
+            <div className="text-center p-3 bg-gray-50 rounded-lg">
+              <p className="text-sm text-gray-600">Diesel</p>
+              <p className="font-semibold text-gray-900">
                 {station.Diesel !== "NA" ? formatCADPrice(parseFloat(station.Diesel)) : "-"}
               </p>
             </div>

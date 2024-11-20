@@ -35,7 +35,6 @@ function App() {
                 <img src="/logo.svg" alt="CostcoFuelPrices" className="h-14" />
               </Link>
               <nav className="hidden md:flex items-center space-x-8">
-                {/* Navigation items */}
                 <Link to="/" className="flex items-center text-gray-600 hover:text-gray-900 gap-1">
                   <Home className="w-4 h-4" />
                   <span>Home</span>
@@ -107,20 +106,20 @@ function App() {
                 </div>
               </div>
             } />
+            
             {/* US Routes */}
             <Route path="/us-map" element={<MapPage />} />
             <Route path="/us-gas-stations" element={<USGasStations />} />
             <Route path="/state/:state" element={<StatePage />} />
             <Route path="/state/:state/:city" element={<CityPage />} />
+            <Route path="/station/us/:id" element={<StationPage />} />
             
             {/* Canada Routes */}
             <Route path="/canada-map" element={<CanadaMapPage />} />
             <Route path="/canada-gas-stations" element={<CanadaGasStations />} />
-            <Route path="/canada/:state/:city" element={<CityPage />} />
             <Route path="/canada/:state" element={<StatePage />} />
-            
-            {/* Station Route */}
-            <Route path="/station/:country/:id" element={<StationPage />} />
+            <Route path="/canada/:state/:city" element={<CityPage />} />
+            <Route path="/station/canada/:id" element={<StationPage />} />
             
             {/* Other Routes */}
             <Route path="/search" element={<SearchPage />} />

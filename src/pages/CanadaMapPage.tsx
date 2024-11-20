@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, ArrowUpDown, ChevronRight } from 'lucide-react';
+import { MapPin, ChevronRight } from 'lucide-react';
 import Map from '../components/Map';
 import SearchBar from '../components/SearchBar';
 import FilterPanel from '../components/FilterPanel';
@@ -19,13 +19,11 @@ const CanadaMapPage = () => {
   });
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Set page title and meta description
   usePageTitle(
     'Costco Gas Prices Map - Canada Locations',
     'Interactive map of all Costco gas stations in Canada. Compare fuel prices and find the nearest location to you.'
   );
 
-  // Filter stations based on search and filters
   const filteredStations = canadaStations[0].filter(station => {
     const matchesSearch = 
       station.City.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -47,10 +45,12 @@ const CanadaMapPage = () => {
       <div className="flex items-center gap-2 text-sm text-gray-500 mb-8">
         <Link to="/" className="hover:text-gray-700">Home</Link>
         <ChevronRight className="w-4 h-4" />
-        <span className="text-gray-900">Canada Gas Price Map</span>
+        <Link to="/canada-gas-stations" className="hover:text-gray-700">Canada Gas Stations</Link>
+        <ChevronRight className="w-4 h-4" />
+        <span className="text-gray-900">Gas Price Map</span>
       </div>
 
-      <h1 className="text-3xl font-bold text-gray-900 mb-4">
+      <h1 className="text-3xl font-bold text-gray-900 mb-6">
         Costco Canada Gas Price Map
       </h1>
 
@@ -60,25 +60,25 @@ const CanadaMapPage = () => {
           stations={filteredStations}
           selectedStation={selectedStation}
           onStationSelect={setSelectedStation}
-          center={[56.1304, -106.3468]} // Center of Canada
+          center={[56.1304, -106.3468]}
           zoom={3.5}
         />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <p className="text-sm text-gray-500">Average {filters.fuelType} Price</p>
           <p className="text-2xl font-bold text-green-600">
             {formatCADPrice(averagePrice)}
           </p>
         </div>
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <p className="text-sm text-gray-500">Total Stations</p>
           <p className="text-2xl font-bold text-gray-900">
             {filteredStations.length}
           </p>
         </div>
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
           <p className="text-sm text-gray-500">Last Updated</p>
           <p className="text-2xl font-bold text-gray-900">6 Hours Ago</p>
         </div>
@@ -88,7 +88,7 @@ const CanadaMapPage = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Sidebar */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <h2 className="font-semibold text-gray-900 mb-4">Search & Filters</h2>
             <div className="space-y-4">
               <SearchBar onSearch={setSearchQuery} />
@@ -98,8 +98,7 @@ const CanadaMapPage = () => {
         </div>
 
         {/* Main Content */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Station List */}
+        <div className="lg:col-span-2">
           <div className="bg-white rounded-lg shadow-sm border border-gray-200">
             <CanadianStationList
               stations={filteredStations}
