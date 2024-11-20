@@ -7,6 +7,7 @@ import NationalAverage from './components/NationalAverage';
 import PopularStations from './components/PopularStations';
 import StateGrid from './components/StateGrid';
 import StationPage from './pages/StationPage';
+import CanadaStationPage from './pages/CanadaStationPage';
 import StatePage from './pages/StatePage';
 import CityPage from './pages/CityPage';
 import MapPage from './pages/USMapPage';
@@ -96,14 +97,12 @@ function App() {
           <Routes>
             <Route path="/" element={
               <div>
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                  <Hero />
-                </div>
-                <NationalAverage />
+                <Hero />
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                   <PopularStations />
                   <StateGrid />
                 </div>
+                <NationalAverage />
               </div>
             } />
             
@@ -119,7 +118,7 @@ function App() {
             <Route path="/canada-gas-stations" element={<CanadaGasStations />} />
             <Route path="/canada/:state" element={<StatePage />} />
             <Route path="/canada/:state/:city" element={<CityPage />} />
-            <Route path="/station/canada/:id" element={<StationPage />} />
+            <Route path="/station/canada/:id" element={<CanadaStationPage />} />
             
             {/* Other Routes */}
             <Route path="/search" element={<SearchPage />} />
@@ -179,15 +178,13 @@ function App() {
                 </div>
               </div>
             </div>
-            <div className="mt-8 pt-8 border-t text-center text-sm text-gray-500">
-              <p>Copyright {new Date().getFullYear()} Costco Fuel Price | All Rights Reserved</p>
+            <div className="mt-8 pt-8 border-t text-sm text-gray-500 text-center">
+              <p>&copy; {new Date().getFullYear()} CostcoFuelPrices.com. All rights reserved.</p>
             </div>
           </div>
         </footer>
-
-        {/* Vercel Analytics */}
-        <Analytics />
       </div>
+      <Analytics />
     </Router>
   );
 }
