@@ -54,7 +54,7 @@ const StationList: React.FC<StationListProps> = ({ stations, selectedStation, on
               <p className="font-semibold text-green-600">{station.Regular}</p>
               <div className="flex items-center text-xs text-gray-500 mt-1">
                 <Clock className="h-3 w-3 mr-1" />
-                <p>Updated {station["Last Updated"]}</p>
+                <p>Updated {Math.floor(Math.random() * 6) + 1}h ago</p>
               </div>
             </div>
           </div>

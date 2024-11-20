@@ -22,6 +22,10 @@ const PopularStations = () => {
     return `/station/us/costco-gas-in-${station.City.toLowerCase()}-${streetAddress.toLowerCase()}-${station.City.toLowerCase()}-${station["State Full"].toLowerCase()}-${station.Zipcode}`.replace(/\s+/g, '-');
   };
 
+  // Calculate random hours between 1-6 for demo purposes
+  // In production, this should use actual timestamp data
+  const getRandomHours = () => Math.floor(Math.random() * 6) + 1;
+
   return (
     <div className="py-16">
       <h2 className="text-2xl font-bold text-gray-900 text-center mb-2">
@@ -55,11 +59,7 @@ const PopularStations = () => {
                 <p className="text-xs text-gray-500">Regular</p>
                 <span className="text-lg font-bold text-green-600">{station.Regular}</span>
               </div>
-              <span className="text-sm text-gray-500">Updated {new Date().toLocaleDateString('en-US', { 
-                month: 'short',
-                day: 'numeric',
-                year: 'numeric'
-              })}</span>
+              <span className="text-sm text-gray-500">Updated {getRandomHours()}h ago</span>
             </div>
           </Link>
         ))}

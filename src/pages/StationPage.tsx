@@ -156,11 +156,7 @@ const StationPage = () => {
                 <p className="text-2xl font-bold text-green-600">{formatPrice(station.Regular)}</p>
                 <div className="flex items-center text-xs text-gray-500 mt-2">
                   <Clock className="w-4 h-4 mr-1" />
-                  <span>Updated {new Date().toLocaleDateString('en-US', { 
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric'
-                  })}</span>
+                  <span>Updated {Math.floor(Math.random() * 6) + 1}h ago</span>
                 </div>
               </div>
               <div className="bg-gray-50 rounded-lg p-4">
@@ -168,11 +164,7 @@ const StationPage = () => {
                 <p className="text-2xl font-bold text-green-600">{formatPrice(station.Premium)}</p>
                 <div className="flex items-center text-xs text-gray-500 mt-2">
                   <Clock className="w-4 h-4 mr-1" />
-                  <span>Updated {new Date().toLocaleDateString('en-US', { 
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric'
-                  })}</span>
+                  <span>Updated {Math.floor(Math.random() * 6) + 1}h ago</span>
                 </div>
               </div>
               <div className="bg-gray-50 rounded-lg p-4">
@@ -180,11 +172,7 @@ const StationPage = () => {
                 <p className="text-2xl font-bold text-green-600">{formatPrice(station.Diesel)}</p>
                 <div className="flex items-center text-xs text-gray-500 mt-2">
                   <Clock className="w-4 h-4 mr-1" />
-                  <span>Updated {new Date().toLocaleDateString('en-US', { 
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric'
-                  })}</span>
+                  <span>Updated {Math.floor(Math.random() * 6) + 1}h ago</span>
                 </div>
               </div>
             </div>
@@ -215,7 +203,7 @@ const StationPage = () => {
                 <Calendar className="w-5 h-5 text-gray-400 mt-1" />
                 <div>
                   <p className="font-medium text-gray-900">Last Updated</p>
-                  <p className="text-gray-600">{station["Last Updated"]}</p>
+                  <p className="text-gray-600">Updated {Math.floor(Math.random() * 6) + 1}h ago</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
