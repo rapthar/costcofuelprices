@@ -104,11 +104,17 @@ const StationPage = () => {
           {isCanada ? "Canada" : "US"} Gas Stations
         </Link>
         <ChevronRight className="w-4 h-4" />
-        <Link to={`/state/${station["State Full"].toLowerCase().replace(/\s+/g, '-')}`} className="hover:text-gray-700">
+        <Link 
+          to={`/${isCanada ? 'canada' : 'state'}/${station["State Full"].toLowerCase().replace(/\s+/g, '-')}`}
+          className="hover:text-gray-700"
+        >
           {station["State Full"]}
         </Link>
         <ChevronRight className="w-4 h-4" />
-        <Link to={`/state/${station["State Full"].toLowerCase().replace(/\s+/g, '-')}/${station.City.toLowerCase().replace(/\s+/g, '-')}`} className="hover:text-gray-700">
+        <Link 
+          to={`/${isCanada ? 'canada' : 'state'}/${station["State Full"].toLowerCase().replace(/\s+/g, '-')}/${station.City.toLowerCase().replace(/\s+/g, '-')}`}
+          className="hover:text-gray-700"
+        >
           {station.City}
         </Link>
         <ChevronRight className="w-4 h-4" />
@@ -116,126 +122,127 @@ const StationPage = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Station Info */}
         <div className="lg:col-span-2">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Costco Gas - {station["Store Name"]}
-          </h1>
-          <div className="flex items-center text-gray-500 mb-6">
-            <MapPin className="w-5 h-5 mr-2" />
-            <p>{station.Address}</p>
-          </div>
-
-          {/* Map */}
-          <div className="w-full h-[400px] mb-8 bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-            <MapContainer
-              center={[station.Latitude, station.Longitude]}
-              zoom={15}
-              style={{ height: '100%', width: '100%' }}
-            >
-              <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              />
-              <Marker position={[station.Latitude, station.Longitude]} icon={customIcon}>
-                <Popup>
-                  <div className="text-sm">
-                    <p className="font-semibold">Costco {station["Store Name"]}</p>
-                    <p>{station.Address}</p>
-                  </div>
-                </Popup>
-              </Marker>
-            </MapContainer>
-          </div>
-
-          {/* Price History Chart */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Price History</h2>
-            <PriceChart stationId={station.Title} />
-          </div>
-
-          {/* Nearby Stations */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Nearby Stations</h2>
-            <NearbyStations stations={nearbyStations} />
-          </div>
-        </div>
-
-        <div>
-          {/* Current Prices */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Current Prices</h2>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <span className="text-gray-600">Regular</span>
-                <span className="font-semibold text-green-600">{formatPrice(station.Regular)}</span>
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-16 h-16 bg-[#005DAA] rounded-lg flex items-center justify-center">
+                <img src="/costco-logo.svg" alt="Costco" className="w-12 h-12" />
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-600">Premium</span>
-                <span className="font-semibold text-green-600">{formatPrice(station.Premium)}</span>
-              </div>
-              {station.Diesel !== "NA" && (
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Diesel</span>
-                  <span className="font-semibold text-green-600">{formatPrice(station.Diesel)}</span>
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900">Costco {station["Store Name"]}</h1>
+                <div className="flex items-center gap-4 mt-1">
+                  <Link
+                    to={`/${isCanada ? 'canada' : 'state'}/${station["State Full"].toLowerCase().replace(/\s+/g, '-')}/${station.City.toLowerCase().replace(/\s+/g, '-')}`}
+                    className="flex items-center text-sm text-gray-500 hover:text-blue-600"
+                  >
+                    <Building2 className="w-4 h-4 mr-1" />
+                    {station.City}
+                  </Link>
+                  <Link
+                    to={`/${isCanada ? 'canada' : 'state'}/${station["State Full"].toLowerCase().replace(/\s+/g, '-')}`}
+                    className="flex items-center text-sm text-gray-500 hover:text-blue-600"
+                  >
+                    <Globe2 className="w-4 h-4 mr-1" />
+                    {station["State Full"]}
+                  </Link>
                 </div>
-              )}
-              <div className="flex items-center text-xs text-gray-500 mt-2">
-                <Clock className="w-4 h-4 mr-1" />
-                <span>Updated {station["Last Updated"]}</span>
               </div>
             </div>
-          </div>
 
-          {/* Station Information */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Station Information</h2>
-            <div className="space-y-4">
-              <div className="flex items-start">
-                <Building2 className="w-5 h-5 text-gray-400 mr-3 mt-0.5" />
-                <div>
-                  <h3 className="font-medium text-gray-900">Store</h3>
-                  <p className="text-gray-600">Costco {station["Store Name"]}</p>
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+              <div className="bg-gray-50 rounded-lg p-4">
+                <p className="text-sm text-gray-600">Regular</p>
+                <p className="text-2xl font-bold text-green-600">{formatPrice(station.Regular)}</p>
               </div>
-              <div className="flex items-start">
-                <MapPin className="w-5 h-5 text-gray-400 mr-3 mt-0.5" />
+              <div className="bg-gray-50 rounded-lg p-4">
+                <p className="text-sm text-gray-600">Premium</p>
+                <p className="text-2xl font-bold text-green-600">{formatPrice(station.Premium)}</p>
+              </div>
+              <div className="bg-gray-50 rounded-lg p-4">
+                <p className="text-sm text-gray-600">Diesel</p>
+                <p className="text-2xl font-bold text-green-600">{formatPrice(station.Diesel)}</p>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex items-start gap-3">
+                <MapPin className="w-5 h-5 text-gray-400 mt-1" />
                 <div>
-                  <h3 className="font-medium text-gray-900">Address</h3>
+                  <p className="font-medium text-gray-900">Address</p>
                   <p className="text-gray-600">{station.Address}</p>
                 </div>
               </div>
-              <div className="flex items-start">
-                <Phone className="w-5 h-5 text-gray-400 mr-3 mt-0.5" />
+              <div className="flex items-start gap-3">
+                <Phone className="w-5 h-5 text-gray-400 mt-1" />
                 <div>
-                  <h3 className="font-medium text-gray-900">Phone</h3>
+                  <p className="font-medium text-gray-900">Phone</p>
                   <p className="text-gray-600">{station.Phone}</p>
                 </div>
               </div>
-              <div className="flex items-start">
-                <Clock className="w-5 h-5 text-gray-400 mr-3 mt-0.5" />
+              <div className="flex items-start gap-3">
+                <Clock className="w-5 h-5 text-gray-400 mt-1" />
                 <div>
-                  <h3 className="font-medium text-gray-900">Hours</h3>
-                  <p className="text-gray-600 whitespace-pre-line">{station.Hours}</p>
+                  <p className="font-medium text-gray-900">Hours</p>
+                  <p className="text-gray-600">{station.Hours}</p>
                 </div>
               </div>
-              <div className="flex items-start">
-                <Globe2 className="w-5 h-5 text-gray-400 mr-3 mt-0.5" />
+              <div className="flex items-start gap-3">
+                <Calendar className="w-5 h-5 text-gray-400 mt-1" />
                 <div>
-                  <h3 className="font-medium text-gray-900">Website</h3>
-                  <a href={station.Web} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-700">
-                    Visit Store Website
-                  </a>
+                  <p className="font-medium text-gray-900">Last Updated</p>
+                  <p className="text-gray-600">{station["Last Updated"]}</p>
                 </div>
               </div>
-              <div className="flex items-start">
-                <Info className="w-5 h-5 text-gray-400 mr-3 mt-0.5" />
+              <div className="flex items-start gap-3">
+                <Info className="w-5 h-5 text-gray-400 mt-1" />
                 <div>
-                  <h3 className="font-medium text-gray-900">Disclaimer</h3>
+                  <p className="font-medium text-gray-900">Disclaimer</p>
                   <p className="text-gray-600 text-sm">{station.Disclaimer}</p>
                 </div>
               </div>
             </div>
           </div>
+
+          <div className="mt-8 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Price History</h2>
+            <PriceChart stationId={station.Title} />
+          </div>
+        </div>
+
+        {/* Map and Nearby Stations */}
+        <div className="lg:col-span-1">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Location</h2>
+            <div className="h-[400px]">
+              <MapContainer
+                center={[station.Latitude, station.Longitude]}
+                zoom={14}
+                className="w-full h-full rounded-lg"
+              >
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                <Marker position={[station.Latitude, station.Longitude]} icon={customIcon}>
+                  <Popup>
+                    <div className="text-sm">
+                      <p className="font-medium">{station["Store Name"]}</p>
+                      <p>{station.Address}</p>
+                      <p>{station.City}, {isCanada ? station["State Full"] : stateAbbreviations[station["State Full"]]}</p>
+                    </div>
+                  </Popup>
+                </Marker>
+              </MapContainer>
+            </div>
+          </div>
+
+          {nearbyStations.length > 0 && (
+            <div className="mt-8 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">Nearby Stations</h2>
+              <NearbyStations stations={nearbyStations} />
+            </div>
+          )}
         </div>
       </div>
     </div>
