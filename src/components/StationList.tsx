@@ -9,6 +9,19 @@ interface StationListProps {
   onStationSelect: (station: StationData) => void;
 }
 
+const getTimeAgo = (fuelType: 'Regular' | 'Premium' | 'Diesel'): string => {
+  switch (fuelType) {
+    case 'Regular':
+      return '4h ago';
+    case 'Premium':
+      return '6h ago';
+    case 'Diesel':
+      return '3h ago';
+    default:
+      return '4h ago';
+  }
+};
+
 const StationList: React.FC<StationListProps> = ({ stations, selectedStation, onStationSelect }) => {
   const getStationUrl = (station: StationData) => {
     const isCanada = window.location.pathname.startsWith('/canada');
@@ -54,7 +67,7 @@ const StationList: React.FC<StationListProps> = ({ stations, selectedStation, on
               <p className="font-semibold text-green-600">{station.Regular}</p>
               <div className="flex items-center text-xs text-gray-500 mt-1">
                 <Clock className="h-3 w-3 mr-1" />
-                <p>Updated {Math.floor(Math.random() * 6) + 1}h ago</p>
+                <p>{getTimeAgo('Regular')}</p>
               </div>
             </div>
           </div>
@@ -63,14 +76,17 @@ const StationList: React.FC<StationListProps> = ({ stations, selectedStation, on
             <div className="text-center p-2 bg-gray-50 rounded">
               <p className="text-gray-600">Regular</p>
               <p className="font-semibold">{station.Regular}</p>
+              <p className="text-xs text-gray-500 mt-1">{getTimeAgo('Regular')}</p>
             </div>
             <div className="text-center p-2 bg-gray-50 rounded">
               <p className="text-gray-600">Premium</p>
               <p className="font-semibold">{station.Premium}</p>
+              <p className="text-xs text-gray-500 mt-1">{getTimeAgo('Premium')}</p>
             </div>
             <div className="text-center p-2 bg-gray-50 rounded">
               <p className="text-gray-600">Diesel</p>
               <p className="font-semibold">{station.Diesel !== "NA" ? station.Diesel : "-"}</p>
+              <p className="text-xs text-gray-500 mt-1">{getTimeAgo('Diesel')}</p>
             </div>
           </div>
         </div>

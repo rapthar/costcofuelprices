@@ -11,6 +11,19 @@ interface CanadianStationListProps {
   fuelType?: string;
 }
 
+const getTimeAgo = (fuelType: 'Regular' | 'Premium' | 'Diesel'): string => {
+  switch (fuelType) {
+    case 'Regular':
+      return '4h ago';
+    case 'Premium':
+      return '6h ago';
+    case 'Diesel':
+      return '3h ago';
+    default:
+      return '4h ago';
+  }
+};
+
 const CanadianStationList: React.FC<CanadianStationListProps> = ({
   stations,
   selectedStation,
@@ -53,7 +66,7 @@ const CanadianStationList: React.FC<CanadianStationListProps> = ({
               </p>
               <div className="flex items-center text-sm text-gray-500 mt-2">
                 <Clock className="h-4 w-4 mr-1" />
-                <p>Updated {station["Last Updated"]}</p>
+                <p>{getTimeAgo(fuelType as 'Regular' | 'Premium' | 'Diesel')}</p>
               </div>
             </div>
           </div>
@@ -62,16 +75,19 @@ const CanadianStationList: React.FC<CanadianStationListProps> = ({
             <div className="text-center p-3 bg-gray-50 rounded-lg">
               <p className="text-sm text-gray-600">Regular</p>
               <p className="font-semibold text-gray-900">{formatCADPrice(parseFloat(station.Regular))}</p>
+              <p className="text-xs text-gray-500 mt-1">{getTimeAgo('Regular')}</p>
             </div>
             <div className="text-center p-3 bg-gray-50 rounded-lg">
               <p className="text-sm text-gray-600">Premium</p>
               <p className="font-semibold text-gray-900">{formatCADPrice(parseFloat(station.Premium))}</p>
+              <p className="text-xs text-gray-500 mt-1">{getTimeAgo('Premium')}</p>
             </div>
             <div className="text-center p-3 bg-gray-50 rounded-lg">
               <p className="text-sm text-gray-600">Diesel</p>
               <p className="font-semibold text-gray-900">
                 {station.Diesel !== "NA" ? formatCADPrice(parseFloat(station.Diesel)) : "-"}
               </p>
+              <p className="text-xs text-gray-500 mt-1">{getTimeAgo('Diesel')}</p>
             </div>
           </div>
         </div>
