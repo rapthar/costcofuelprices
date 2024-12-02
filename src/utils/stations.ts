@@ -11,20 +11,21 @@ export const findStation = (
   const stationList = isCanada ? canadaStations[0] : stations;
   
   return stationList.find(station => {
-    // Extract the street number from both addresses
+    // Create normalized versions of addresses for comparison
+    const normalizedStationAddr = slugify(station.Address, { lower: true });
+    const normalizedSearchAddr = slugify(address, { lower: true });
+    
+    // Extract street numbers
     const urlStreetNumber = address.split('-')[0];
     const stationStreetNumber = station.Address.split(' ')[0];
     
-    // Create slugified versions of the full addresses for comparison
-    const slugifiedStationAddr = slugify(station.Address, { lower: true });
-    const slugifiedSearchAddr = address;
+    // Try different matching strategies
+    const exactMatch = normalizedStationAddr === normalizedSearchAddr;
+    const streetNumberMatch = urlStreetNumber === stationStreetNumber;
+    const containsMatch = normalizedStationAddr.includes(normalizedSearchAddr) || 
+                         normalizedSearchAddr.includes(normalizedStationAddr);
     
-    // Match if either the street numbers match or the full addresses match
-    const matchAddress = urlStreetNumber === stationStreetNumber || 
-                        slugifiedStationAddr.includes(slugifiedSearchAddr) ||
-                        slugifiedSearchAddr.includes(slugifiedStationAddr);
-    
-    return matchAddress;
+    return exactMatch || (streetNumberMatch && containsMatch);
   });
 };
 

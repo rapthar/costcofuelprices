@@ -15,7 +15,6 @@ export const parseStationUrl = (url: string): {
   address: string;
 } => {
   // The URL structure should be: /station/(us|canada)/costco-[address]
-  // First, clean the URL by removing leading/trailing slashes and 'station' prefix if present
   const cleanUrl = url.replace(/^\/+|\/+$/g, '').replace(/^station\//, '');
   const parts = cleanUrl.split('/');
 
@@ -30,22 +29,25 @@ export const parseStationUrl = (url: string): {
   }
 
   const isCanada = parts[0]?.toLowerCase() === 'canada';
-  const addressPart = parts[1].replace('costco-', '');
+  const address = parts[1].replace('costco-', '');
   
-  // Extract city from the address (it's part of the address now)
-  const addressParts = decodeURIComponent(addressPart).split('-');
-  const cityIndex = addressParts.findIndex(part => 
-    part.toLowerCase() === 'al' || 
-    part.toLowerCase() === 'fl' || 
-    part.toLowerCase() === 'ca'
-  ) - 1;
+  // Extract city from address (usually between street name and state)
+  const addressParts = decodeURIComponent(address).split('-');
+  let city = '';
   
-  const city = cityIndex > 0 ? addressParts[cityIndex] : '';
+  // Look for state abbreviation and take the part before it as city
+  const stateIndex = addressParts.findIndex(part => 
+    /^(al|ak|az|ar|ca|co|ct|de|fl|ga|hi|id|il|in|ia|ks|ky|la|me|md|ma|mi|mn|ms|mo|mt|ne|nv|nh|nj|nm|ny|nc|nd|oh|ok|or|pa|ri|sc|sd|tn|tx|ut|vt|va|wa|wv|wi|wy)$/i.test(part)
+  );
   
+  if (stateIndex > 0) {
+    city = addressParts[stateIndex - 1];
+  }
+
   return {
     isCanada,
     city,
-    storeName: 'costco', // Since all stores are Costco
-    address: decodeURIComponent(addressPart)
+    storeName: 'costco',
+    address: decodeURIComponent(address)
   };
 };
