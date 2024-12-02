@@ -15,18 +15,11 @@ export const parseStationUrl = (url: string): {
   address: string;
 } => {
   // The URL structure should be: /station/(us|canada)/costco-[address]
-  const cleanUrl = url.replace(/^\/+|\/+$/g, '').replace(/^station\//, '');
-  const parts = cleanUrl.split('/');
+  console.log('Parsing URL:', { url });
   
-  console.log('Parsing URL:', {
-    url,
-    cleanUrl,
-    parts
-  });
-
-  // Check if we have enough parts and correct format
-  if (parts.length < 2 || !parts[1]?.startsWith('costco-')) {
-    console.log('Invalid URL format');
+  // Check if we have the correct format
+  if (!url || typeof url !== 'string') {
+    console.log('Invalid URL:', url);
     return {
       isCanada: false,
       city: '',
@@ -35,11 +28,23 @@ export const parseStationUrl = (url: string): {
     };
   }
 
-  const isCanada = parts[0]?.toLowerCase() === 'canada';
-  const address = parts[1].replace('costco-', '');
+  // Extract the address part after "costco-"
+  const addressMatch = url.match(/costco-(.+)$/);
+  if (!addressMatch) {
+    console.log('No address found in URL');
+    return {
+      isCanada: false,
+      city: '',
+      storeName: '',
+      address: ''
+    };
+  }
+
+  const address = decodeURIComponent(addressMatch[1]);
+  console.log('Extracted address:', address);
   
   // Extract city from address (usually between street name and state)
-  const addressParts = decodeURIComponent(address).split('-');
+  const addressParts = address.split('-');
   console.log('Address parts:', addressParts);
   
   let city = '';
@@ -53,16 +58,13 @@ export const parseStationUrl = (url: string): {
     city = addressParts[stateIndex - 1];
   }
   
-  console.log('Parsed result:', {
-    isCanada,
-    city,
-    address: decodeURIComponent(address)
-  });
-
-  return {
-    isCanada,
+  const result = {
+    isCanada: url.includes('/canada/'),
     city,
     storeName: 'costco',
-    address: decodeURIComponent(address)
+    address
   };
+  
+  console.log('Parsed result:', result);
+  return result;
 };
