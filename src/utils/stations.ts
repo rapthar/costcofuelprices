@@ -13,10 +13,10 @@ export const findStation = (
   return stationList.find(station => {
     // Create normalized versions of addresses for comparison
     const normalizedStationAddr = slugify(station.Address, { lower: true });
-    const normalizedSearchAddr = slugify(address, { lower: true });
+    const normalizedSearchAddr = address;
     
     // Extract street numbers
-    const urlStreetNumber = address.split('-')[0];
+    const urlStreetNumber = normalizedSearchAddr.split('-')[0];
     const stationStreetNumber = station.Address.split(' ')[0];
     
     // Try different matching strategies
@@ -25,7 +25,19 @@ export const findStation = (
     const containsMatch = normalizedStationAddr.includes(normalizedSearchAddr) || 
                          normalizedSearchAddr.includes(normalizedStationAddr);
     
-    return exactMatch || (streetNumberMatch && containsMatch);
+    // If we have an exact match, use that
+    if (exactMatch) return true;
+    
+    // If street numbers match and addresses are similar, use that
+    if (streetNumberMatch && containsMatch) return true;
+    
+    // Last resort: try matching just the street number and city
+    if (streetNumberMatch && 
+        station.City.toLowerCase() === city.toLowerCase()) {
+      return true;
+    }
+    
+    return false;
   });
 };
 
