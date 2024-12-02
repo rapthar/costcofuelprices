@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import HomePage from '../pages/HomePage';
 import USMapPage from '../pages/USMapPage';
 import USGasStations from '../pages/USGasStations';
@@ -27,6 +27,9 @@ const AppRoutes = () => {
       <Route path="/station/us/:id" element={<StationPage />} />
       <Route path="/us/:state" element={<StatePage />} />
       <Route path="/us/:state/:city" element={<CityPage />} />
+      
+      {/* Support for /state/:state URLs */}
+      <Route path="/state/:state" element={<StatePage />} />
       
       {/* Canada Routes */}
       <Route path="/canada-map" element={<CanadaMapPage />} />

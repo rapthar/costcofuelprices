@@ -13,7 +13,11 @@ import { parseStateUrl } from '../utils/urls';
 
 const StatePage = () => {
   const { state } = useParams();
-  const { isCanada } = parseStateUrl(window.location.pathname);
+  const pathname = window.location.pathname;
+  const isCanada = pathname.startsWith('/canada/');
+  // If URL starts with /state/, treat it as a US state
+  const isLegacyUrl = pathname.startsWith('/state/');
+  const { isCanada: isCanadaFromUrl } = parseStateUrl(window.location.pathname);
   const [selectedStation, setSelectedStation] = useState<StationData | null>(null);
   const [filters, setFilters] = useState({
     fuelType: 'Regular',
@@ -41,7 +45,8 @@ const StatePage = () => {
     state,
     formattedState,
     isCanada,
-    pathname: window.location.pathname
+    isLegacyUrl,
+    pathname
   });
   
   const stateStations = isCanada
@@ -70,7 +75,8 @@ const StatePage = () => {
     total: stateStations.length,
     firstStation: stateStations[0],
     state: formattedState,
-    isCanada
+    isCanada,
+    isLegacyUrl
   });
 
   // Filter stations based on search query
