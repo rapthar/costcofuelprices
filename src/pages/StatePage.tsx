@@ -9,10 +9,11 @@ import { stations, canadaStations } from '../data';
 import { StationData } from '../types';
 import { stateAbbreviations } from '../utils/states';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { parseStateUrl } from '../utils/urlParsing';
 
 const StatePage = () => {
   const { state } = useParams();
-  const isCanada = window.location.pathname.startsWith('/canada/');
+  const { isCanada } = parseStateUrl(window.location.pathname);
   const [selectedStation, setSelectedStation] = useState<StationData | null>(null);
   const [filters, setFilters] = useState({
     fuelType: 'Regular',
@@ -34,17 +35,17 @@ const StatePage = () => {
 
   // Get stations for this state/province
   const normalizedState = state?.replace(/-/g, ' ').toLowerCase();
-  console.log('URL state parameter:', state);
-  console.log('Normalized state:', normalizedState);
-  console.log('Is Canada:', isCanada);
-  console.log('Available provinces:', [...new Set(canadaStations[0].map(s => s["State Full"]))]);
+  console.log('State page params:', {
+    state,
+    normalizedState,
+    isCanada,
+    pathname: window.location.pathname
+  });
   
   const stateStations = isCanada
-    ? canadaStations[0].filter(station => {
-        const stateMatch = station["State Full"].toLowerCase() === normalizedState;
-        console.log('Checking station:', station["State Full"], 'Match:', stateMatch);
-        return stateMatch;
-      })
+    ? canadaStations[0].filter(station => 
+        station["State Full"].toLowerCase() === normalizedState
+      )
     : stations.filter(station => 
         station["State Full"].toLowerCase() === normalizedState
       );

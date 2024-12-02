@@ -8,6 +8,36 @@ export const generateStationUrl = (station: StationData, isCanada: boolean = fal
   return `${baseUrl}/costco-${addressSlug}`;
 };
 
+export const generateStateUrl = (state: string, isCanada: boolean = false): string => {
+  const baseUrl = isCanada ? '/canada' : '/us';
+  const stateSlug = slugify(state, { lower: true });
+  
+  return `${baseUrl}/${stateSlug}`;
+};
+
+export const parseStateUrl = (url: string): {
+  isCanada: boolean;
+  state: string;
+} => {
+  // URL structure: /(us|canada)/[state]
+  console.log('Parsing state URL:', { url });
+  
+  if (!url || typeof url !== 'string') {
+    console.log('Invalid state URL:', url);
+    return {
+      isCanada: false,
+      state: ''
+    };
+  }
+
+  const parts = url.split('/').filter(Boolean);
+  const isCanada = parts[0]?.toLowerCase() === 'canada';
+  const state = parts[1] || '';
+  
+  console.log('Parsed state URL:', { isCanada, state });
+  return { isCanada, state };
+};
+
 export const parseStationUrl = (url: string): { 
   isCanada: boolean; 
   city: string; 
@@ -15,7 +45,7 @@ export const parseStationUrl = (url: string): {
   address: string;
 } => {
   // The URL structure should be: /station/(us|canada)/costco-[address]
-  console.log('Parsing URL:', { url });
+  console.log('Parsing station URL:', { url });
   
   // Check if we have the correct format
   if (!url || typeof url !== 'string') {
