@@ -45,26 +45,33 @@ const StatePage = () => {
   });
   
   const stateStations = isCanada
-    ? canadaStations[0].filter(station => {
-        const stateMatch = station["State Full"].toLowerCase() === formattedState.toLowerCase();
+    ? canadaStations.filter(station => {
+        const stateMatch = station["State Full"].toLowerCase().trim() === formattedState.toLowerCase().trim();
         console.log('Checking Canada station:', {
           stationState: station["State Full"],
           formattedState,
-          match: stateMatch
+          match: stateMatch,
+          stationData: station
         });
         return stateMatch;
       })
     : stations.filter(station => {
-        const stateMatch = station["State Full"].toLowerCase() === formattedState.toLowerCase();
+        const stateMatch = station["State Full"].toLowerCase().trim() === formattedState.toLowerCase().trim();
         console.log('Checking US station:', {
           stationState: station["State Full"],
           formattedState,
-          match: stateMatch
+          match: stateMatch,
+          stationData: station
         });
         return stateMatch;
       });
 
-  console.log('Found stations:', stateStations.length);
+  console.log('Found stations:', {
+    total: stateStations.length,
+    firstStation: stateStations[0],
+    state: formattedState,
+    isCanada
+  });
 
   // Filter stations based on search query
   const filteredStations = stateStations.filter(station => {
