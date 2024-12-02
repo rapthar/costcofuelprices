@@ -10,20 +10,44 @@ export const findStation = (
 ): StationData | undefined => {
   const stationList = isCanada ? canadaStations[0] : stations;
   
+  // Normalize the search address
+  const normalizedSearchAddr = address.toLowerCase();
+  console.log('Searching for station:', { 
+    normalizedSearchAddr, 
+    city, 
+    isCanada 
+  });
+  
   return stationList.find(station => {
     // Create normalized versions of addresses for comparison
     const normalizedStationAddr = slugify(station.Address, { lower: true });
-    const normalizedSearchAddr = address;
     
     // Extract street numbers
     const urlStreetNumber = normalizedSearchAddr.split('-')[0];
     const stationStreetNumber = station.Address.split(' ')[0];
+    
+    // Log matching attempts
+    console.log('Trying to match:', {
+      station: station.Address,
+      normalizedStation: normalizedStationAddr,
+      urlStreetNumber,
+      stationStreetNumber,
+      stationCity: station.City
+    });
     
     // Try different matching strategies
     const exactMatch = normalizedStationAddr === normalizedSearchAddr;
     const streetNumberMatch = urlStreetNumber === stationStreetNumber;
     const containsMatch = normalizedStationAddr.includes(normalizedSearchAddr) || 
                          normalizedSearchAddr.includes(normalizedStationAddr);
+    
+    // Log match results
+    console.log('Match results:', {
+      exactMatch,
+      streetNumberMatch,
+      containsMatch,
+      cityMatch: station.City.toLowerCase() === city.toLowerCase()
+    });
     
     // If we have an exact match, use that
     if (exactMatch) return true;

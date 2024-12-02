@@ -14,8 +14,14 @@ import NearbyStations from '../components/NearbyStations';
 
 const StationPage = () => {
   const { id } = useParams();
+  console.log('URL param id:', id);
+  
   const { isCanada, city, storeName, address } = parseStationUrl(id || '');
+  console.log('Parsed URL:', { isCanada, city, storeName, address });
+  
   const station = findStation(city, storeName, address, isCanada);
+  console.log('Found station:', station);
+  
   const nearbyStations = station ? findNearbyStations(station, isCanada) : [];
 
   usePageTitle(
