@@ -7,6 +7,15 @@ interface StationDetailsProps {
 }
 
 const StationDetails: React.FC<StationDetailsProps> = ({ station }) => {
+  const formatDate = () => {
+    const today = new Date();
+    return today.toLocaleDateString('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex items-start gap-3">
@@ -37,7 +46,7 @@ const StationDetails: React.FC<StationDetailsProps> = ({ station }) => {
         <Calendar className="w-5 h-5 text-gray-400 mt-1" />
         <div>
           <p className="font-medium text-gray-900">Last Updated</p>
-          <p className="text-gray-600">{station["Last Updated"]}</p>
+          <p className="text-gray-600">{formatDate()}</p>
         </div>
       </div>
       
