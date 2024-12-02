@@ -30,11 +30,31 @@ export const parseStateUrl = (url: string): {
     };
   }
 
-  const parts = url.split('/').filter(Boolean);
-  const isCanada = parts[0]?.toLowerCase() === 'canada';
-  const state = parts[1] || '';
+  // Clean up the URL and split into parts
+  const cleanUrl = url.replace(/^\/+|\/+$/g, '');
+  const parts = cleanUrl.split('/');
   
-  console.log('Parsed state URL:', { isCanada, state });
+  console.log('URL parts:', parts);
+  
+  // Check if we have enough parts
+  if (parts.length < 2) {
+    console.log('Not enough URL parts');
+    return {
+      isCanada: false,
+      state: ''
+    };
+  }
+
+  const isCanada = parts[0]?.toLowerCase() === 'canada';
+  const stateSlug = parts[1];
+  
+  // Convert the state slug back to a proper name
+  const state = stateSlug
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+  
+  console.log('Parsed state URL:', { isCanada, state, stateSlug });
   return { isCanada, state };
 };
 

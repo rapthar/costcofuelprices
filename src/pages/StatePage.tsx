@@ -22,33 +22,49 @@ const StatePage = () => {
   });
   const [searchQuery, setSearchQuery] = useState('');
 
-  const formattedState = state?.replace(/-/g, ' ')
-    .split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+  // Format the state name for display
+  const formattedState = state
+    ? state
+        .split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ')
+    : '';
 
   // Set page title and meta description
   usePageTitle(
-    `Costco Gas Prices ${formattedState}${isCanada ? ', Canada' : ''}`,
+    `Costco Gas Prices in ${formattedState}${isCanada ? ', Canada' : ''}`,
     `Find the best Costco gas prices in ${formattedState}${isCanada ? ', Canada' : ''}. Compare fuel costs and locate the nearest Costco gas station in your area.`
   );
 
   // Get stations for this state/province
-  const normalizedState = state?.replace(/-/g, ' ').toLowerCase();
   console.log('State page params:', {
     state,
-    normalizedState,
+    formattedState,
     isCanada,
     pathname: window.location.pathname
   });
   
   const stateStations = isCanada
-    ? canadaStations[0].filter(station => 
-        station["State Full"].toLowerCase() === normalizedState
-      )
-    : stations.filter(station => 
-        station["State Full"].toLowerCase() === normalizedState
-      );
+    ? canadaStations[0].filter(station => {
+        const stateMatch = station["State Full"].toLowerCase() === formattedState.toLowerCase();
+        console.log('Checking Canada station:', {
+          stationState: station["State Full"],
+          formattedState,
+          match: stateMatch
+        });
+        return stateMatch;
+      })
+    : stations.filter(station => {
+        const stateMatch = station["State Full"].toLowerCase() === formattedState.toLowerCase();
+        console.log('Checking US station:', {
+          stationState: station["State Full"],
+          formattedState,
+          match: stateMatch
+        });
+        return stateMatch;
+      });
+
+  console.log('Found stations:', stateStations.length);
 
   // Filter stations based on search query
   const filteredStations = stateStations.filter(station => {
