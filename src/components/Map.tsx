@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { Icon } from 'leaflet';
 import { StationData } from '../types';
 import { MapPin, Phone, Clock } from 'lucide-react';
+import { calculateMapBounds } from '../utils/map';
 import 'leaflet/dist/leaflet.css';
 
 interface MapProps {
@@ -27,18 +28,12 @@ const Map: React.FC<MapProps> = ({ stations, selectedStation, onStationSelect })
     station => !isNaN(Number(station.Latitude)) && !isNaN(Number(station.Longitude))
   );
 
-  // Calculate center based on valid stations or default to Ontario center
-  const center = validStations.length > 0
-    ? {
-        lat: validStations.reduce((sum, station) => sum + Number(station.Latitude), 0) / validStations.length,
-        lng: validStations.reduce((sum, station) => sum + Number(station.Longitude), 0) / validStations.length
-      }
-    : { lat: 51.2538, lng: -85.3232 }; // Ontario center
+  const { center, zoom } = calculateMapBounds(validStations);
 
   return (
     <MapContainer
-      center={[center.lat, center.lng]}
-      zoom={validStations.length > 0 ? 8 : 4}
+      center={center}
+      zoom={zoom}
       className="w-full h-full rounded-lg"
     >
       <TileLayer

@@ -1,17 +1,19 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { setMetaDescription, setMetaTitle, getDefaultDescription, getDefaultTitle } from '../utils/meta';
+import { HelmetProvider } from 'react-helmet-async';
+import SEOHead from './SEOHead';
+import { getDefaultSEO } from '../utils/seo';
 
-const MetaManager: React.FC = () => {
+const MetaManager: React.FC = ({ children }) => {
   const location = useLocation();
+  const seo = getDefaultSEO(location.pathname);
 
-  useEffect(() => {
-    const path = location.pathname;
-    setMetaDescription(getDefaultDescription(path));
-    setMetaTitle(getDefaultTitle(path));
-  }, [location]);
-
-  return null;
+  return (
+    <HelmetProvider>
+      <SEOHead seo={seo} />
+      {children}
+    </HelmetProvider>
+  );
 };
 
 export default MetaManager;
