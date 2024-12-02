@@ -14,15 +14,14 @@ export const findStation = (
     const matchCity = slugify(station.City, { lower: true }) === slugify(city, { lower: true });
     const matchStore = slugify(station["Store Name"], { lower: true }) === slugify(storeName, { lower: true });
     
-    // Convert both addresses to slugified form and extract just the street number and name
-    const slugifiedStationAddr = slugify(station.Address, { lower: true });
-    const slugifiedSearchAddr = slugify(address, { lower: true });
+    // Extract the street number and name from the URL address
+    const urlStreetParts = slugify(address, { lower: true }).split('-');
+    const streetNumber = urlStreetParts[0];
     
-    // Extract the street number and first part of the address (before city/state/zip)
-    const stationAddrParts = slugifiedStationAddr.split(',')[0];
-    const searchAddrParts = slugifiedSearchAddr.split('-')[0];
+    // Extract the street number from the station address
+    const stationStreetNumber = slugify(station.Address, { lower: true }).split(' ')[0];
     
-    const matchAddress = stationAddrParts.includes(searchAddrParts) || searchAddrParts.includes(stationAddrParts);
+    const matchAddress = streetNumber === stationStreetNumber;
     
     return matchCity && matchStore && matchAddress;
   });
