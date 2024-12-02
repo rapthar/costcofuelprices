@@ -16,16 +16,17 @@ export const parseStationUrl = (url: string): {
   storeName: string;
   address: string;
 } => {
-  const parts = url.split('/');
-  const isCanada = parts[0]?.toLowerCase() === 'canada';
+  // Remove any leading/trailing slashes and split the path
+  const cleanUrl = url.replace(/^\/+|\/+$/g, '');
+  const parts = cleanUrl.split('/');
   
-  // Remove any empty strings and decode URL components
-  const cleanParts = parts.filter(Boolean).map(part => decodeURIComponent(part));
+  // The URL structure is: station/(us|canada)/city/storeName/address
+  const isCanada = parts[1]?.toLowerCase() === 'canada';
   
   return {
     isCanada,
-    city: cleanParts[0] || '',
-    storeName: cleanParts[1] || '',
-    address: cleanParts[2] || ''
+    city: decodeURIComponent(parts[2] || ''),
+    storeName: decodeURIComponent(parts[3] || ''),
+    address: decodeURIComponent(parts[4] || '')
   };
 };
