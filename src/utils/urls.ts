@@ -3,11 +3,9 @@ import { StationData } from '../types';
 
 export const generateStationUrl = (station: StationData, isCanada: boolean = false): string => {
   const baseUrl = isCanada ? '/station/canada' : '/station/us';
-  const storeSlug = slugify(station["Store Name"], { lower: true });
-  const citySlug = slugify(station.City, { lower: true });
   const addressSlug = slugify(station.Address, { lower: true });
   
-  return `${baseUrl}/${citySlug}/${storeSlug}/${addressSlug}`;
+  return `${baseUrl}/costco-${addressSlug}`;
 };
 
 export const parseStationUrl = (url: string): { 
@@ -16,13 +14,13 @@ export const parseStationUrl = (url: string): {
   storeName: string;
   address: string;
 } => {
-  // The URL structure should be: /station/(us|canada)/city/storeName/address
+  // The URL structure should be: /station/(us|canada)/costco-[address]
   // First, clean the URL by removing leading/trailing slashes and 'station' prefix if present
   const cleanUrl = url.replace(/^\/+|\/+$/g, '').replace(/^station\//, '');
   const parts = cleanUrl.split('/');
 
-  // Check if we have enough parts
-  if (parts.length < 4) {
+  // Check if we have enough parts and correct format
+  if (parts.length < 2 || !parts[1]?.startsWith('costco-')) {
     return {
       isCanada: false,
       city: '',
@@ -31,16 +29,23 @@ export const parseStationUrl = (url: string): {
     };
   }
 
-  // parts[0] should be 'us' or 'canada'
-  // parts[1] is city
-  // parts[2] is store name
-  // parts[3] is address
   const isCanada = parts[0]?.toLowerCase() === 'canada';
+  const addressPart = parts[1].replace('costco-', '');
+  
+  // Extract city from the address (it's part of the address now)
+  const addressParts = decodeURIComponent(addressPart).split('-');
+  const cityIndex = addressParts.findIndex(part => 
+    part.toLowerCase() === 'al' || 
+    part.toLowerCase() === 'fl' || 
+    part.toLowerCase() === 'ca'
+  ) - 1;
+  
+  const city = cityIndex > 0 ? addressParts[cityIndex] : '';
   
   return {
     isCanada,
-    city: decodeURIComponent(parts[1] || ''),
-    storeName: decodeURIComponent(parts[2] || ''),
-    address: decodeURIComponent(parts[3] || '')
+    city,
+    storeName: 'costco', // Since all stores are Costco
+    address: decodeURIComponent(addressPart)
   };
 };

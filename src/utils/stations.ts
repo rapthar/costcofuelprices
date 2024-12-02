@@ -11,19 +11,20 @@ export const findStation = (
   const stationList = isCanada ? canadaStations[0] : stations;
   
   return stationList.find(station => {
-    const matchCity = slugify(station.City, { lower: true }) === slugify(city, { lower: true });
-    const matchStore = slugify(station["Store Name"], { lower: true }) === slugify(storeName, { lower: true });
+    // Extract the street number from both addresses
+    const urlStreetNumber = address.split('-')[0];
+    const stationStreetNumber = station.Address.split(' ')[0];
     
-    // Extract the street number and name from the URL address
-    const urlStreetParts = slugify(address, { lower: true }).split('-');
-    const streetNumber = urlStreetParts[0];
+    // Create slugified versions of the full addresses for comparison
+    const slugifiedStationAddr = slugify(station.Address, { lower: true });
+    const slugifiedSearchAddr = address;
     
-    // Extract the street number from the station address
-    const stationStreetNumber = slugify(station.Address, { lower: true }).split(' ')[0];
+    // Match if either the street numbers match or the full addresses match
+    const matchAddress = urlStreetNumber === stationStreetNumber || 
+                        slugifiedStationAddr.includes(slugifiedSearchAddr) ||
+                        slugifiedSearchAddr.includes(slugifiedStationAddr);
     
-    const matchAddress = streetNumber === stationStreetNumber;
-    
-    return matchCity && matchStore && matchAddress;
+    return matchAddress;
   });
 };
 
