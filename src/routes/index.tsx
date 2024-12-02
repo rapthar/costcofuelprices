@@ -24,16 +24,16 @@ const AppRoutes = () => {
       {/* US Routes */}
       <Route path="/us-map" element={<USMapPage />} />
       <Route path="/us-gas-stations" element={<USGasStations />} />
-      <Route path="/costco-us/:address" element={<StationPage />} />
-      <Route path="/costco-us/:address/:state" element={<StatePage />} />
-      <Route path="/costco-us/:address/:state/:city" element={<CityPage />} />
+      <Route path="/station/us/:id" element={<StationPage />} />
+      <Route path="/us/:state" element={<StatePage />} />
+      <Route path="/us/:state/:city" element={<CityPage />} />
       
       {/* Canada Routes */}
       <Route path="/canada-map" element={<CanadaMapPage />} />
       <Route path="/canada-gas-stations" element={<CanadaGasStations />} />
-      <Route path="/costco-canada/:address" element={<StationPage />} />
-      <Route path="/costco-canada/:address/:state" element={<StatePage />} />
-      <Route path="/costco-canada/:address/:state/:city" element={<CityPage />} />
+      <Route path="/station/canada/:id" element={<StationPage />} />
+      <Route path="/canada/:state" element={<StatePage />} />
+      <Route path="/canada/:state/:city" element={<CityPage />} />
       
       {/* Other Routes */}
       <Route path="/search" element={<SearchPage />} />
