@@ -13,7 +13,16 @@ export const findStation = (
   return stationList.find(station => {
     const matchCity = slugify(station.City, { lower: true }) === slugify(city, { lower: true });
     const matchStore = slugify(station["Store Name"], { lower: true }) === slugify(storeName, { lower: true });
-    const matchAddress = slugify(station.Address, { lower: true }).includes(slugify(address, { lower: true }));
+    
+    // Convert both addresses to slugified form and extract just the street number and name
+    const slugifiedStationAddr = slugify(station.Address, { lower: true });
+    const slugifiedSearchAddr = slugify(address, { lower: true });
+    
+    // Extract the street number and first part of the address (before city/state/zip)
+    const stationAddrParts = slugifiedStationAddr.split(',')[0];
+    const searchAddrParts = slugifiedSearchAddr.split('-')[0];
+    
+    const matchAddress = stationAddrParts.includes(searchAddrParts) || searchAddrParts.includes(stationAddrParts);
     
     return matchCity && matchStore && matchAddress;
   });
