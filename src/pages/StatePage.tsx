@@ -9,7 +9,7 @@ import { stations, canadaStations } from '../data';
 import { StationData } from '../types';
 import { stateAbbreviations } from '../utils/states';
 import { usePageTitle } from '../hooks/usePageTitle';
-import { parseStateUrl } from '../utils/urlParsing';
+import { parseStateUrl } from '../utils/urls';
 
 const StatePage = () => {
   const { state } = useParams();
@@ -50,112 +50,87 @@ const StatePage = () => {
         station["State Full"].toLowerCase() === normalizedState
       );
 
-  // Filter stations based on search and filters
+  // Filter stations based on search query
   const filteredStations = stateStations.filter(station => {
-    const matchesSearch = station.City.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         station.Address.toLowerCase().includes(searchQuery.toLowerCase());
-    if (station[filters.fuelType] === 'NA') return matchesSearch;
-    const matchesPrice = parseFloat(station[filters.fuelType].replace('$', '') || '0') <= filters.maxPrice;
-    return matchesSearch && matchesPrice;
+    if (!searchQuery) return true;
+    
+    const searchLower = searchQuery.toLowerCase();
+    return (
+      station.City.toLowerCase().includes(searchLower) ||
+      station.Address.toLowerCase().includes(searchLower) ||
+      station["Store Name"].toLowerCase().includes(searchLower)
+    );
   });
 
-  const averagePrice = filteredStations
-    .filter(s => s[filters.fuelType] !== "NA")
-    .reduce((acc, station) => acc + parseFloat(station[filters.fuelType].replace('$', '') || '0'), 0) / 
-    filteredStations.filter(s => s[filters.fuelType] !== "NA").length || 0;
+  // Sort stations by price
+  const sortedStations = [...filteredStations].sort((a, b) => {
+    const priceA = parseFloat(a[filters.fuelType].replace('$', ''));
+    const priceB = parseFloat(b[filters.fuelType].replace('$', ''));
+    return priceA - priceB;
+  });
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Breadcrumbs */}
-      <div className="flex items-center gap-2 text-sm text-gray-500 mb-8">
-        <Link to="/" className="hover:text-gray-700">Home</Link>
-        <ChevronRight className="w-4 h-4" />
-        <Link to={isCanada ? "/canada-gas-stations" : "/us-gas-stations"} className="hover:text-gray-700">
-          {isCanada ? 'Canada Gas Stations' : 'US Gas Stations'}
-        </Link>
-        <ChevronRight className="w-4 h-4" />
-        <span className="text-gray-900">{formattedState}</span>
-      </div>
+      <nav className="flex mb-8" aria-label="Breadcrumb">
+        <ol className="flex items-center space-x-2">
+          <li>
+            <Link to="/" className="text-gray-500 hover:text-gray-700">Home</Link>
+          </li>
+          <ChevronRight className="h-4 w-4 text-gray-400" />
+          <li>
+            <Link 
+              to={isCanada ? "/canada-map" : "/us-map"} 
+              className="text-gray-500 hover:text-gray-700"
+            >
+              {isCanada ? "Canada" : "United States"}
+            </Link>
+          </li>
+          <ChevronRight className="h-4 w-4 text-gray-400" />
+          <li>
+            <span className="text-gray-900 font-medium">{formattedState}</span>
+          </li>
+        </ol>
+      </nav>
 
-      <h1 className="text-3xl font-bold text-gray-900 mb-4">
-        Costco Gas Prices in {formattedState}
-      </h1>
-
-      {/* Map */}
-      <div className="w-full h-[400px] mb-8 bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-        <Map
-          stations={filteredStations}
-          selectedStation={selectedStation}
-          onStationSelect={setSelectedStation}
-        />
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-          <p className="text-sm text-gray-500">Average {filters.fuelType} Price</p>
-          <p className="text-2xl font-bold text-green-600">
-            ${averagePrice.toFixed(2)}
-          </p>
-        </div>
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-          <p className="text-sm text-gray-500">Total Stations</p>
-          <p className="text-2xl font-bold text-gray-900">
-            {filteredStations.length}
-          </p>
-        </div>
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-          <p className="text-sm text-gray-500">Last Updated</p>
-          <p className="text-2xl font-bold text-gray-900">6 Hours Ago</p>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Sidebar */}
-        <div className="lg:col-span-1 space-y-6">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-            <h2 className="font-semibold text-gray-900 mb-4">Search & Filters</h2>
-            <div className="space-y-4">
-              <SearchBar onSearch={setSearchQuery} />
-              <FilterPanel filters={filters} onFilterChange={setFilters} />
-            </div>
-          </div>
-        </div>
-
-        {/* Main Content */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Station List */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-            <StationList
-              stations={filteredStations}
-              selectedStation={selectedStation}
-              onStationSelect={setSelectedStation}
-              fuelType={filters.fuelType}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">
+            Costco Gas Prices in {formattedState}
+          </h1>
+          
+          <div className="mb-6">
+            <SearchBar 
+              value={searchQuery}
+              onChange={setSearchQuery}
+              placeholder="Search by city or address..."
             />
           </div>
-          {/* City Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-            {Array.from(new Set(filteredStations.map(station => station.City))).sort().map(city => {
-              const cityStations = filteredStations.filter(station => station.City === city);
-              const citySlug = city.toLowerCase().replace(/\s+/g, '-');
-              
-              return (
-                <Link
-                  key={city}
-                  to={`${isCanada ? '/canada' : '/state'}/${state}/${citySlug}`}
-                  className="block p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
-                >
-                  <div className="flex items-start gap-3">
-                    <MapPin className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" />
-                    <div>
-                      <h3 className="font-medium text-gray-900">{city}</h3>
-                      <p className="text-sm text-gray-500">{cityStations.length} location{cityStations.length !== 1 ? 's' : ''}</p>
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
+
+          <div className="mb-6">
+            <FilterPanel 
+              filters={filters}
+              onChange={setFilters}
+            />
           </div>
+
+          <StationList 
+            stations={sortedStations}
+            selectedStation={selectedStation}
+            onStationSelect={setSelectedStation}
+          />
+        </div>
+
+        <div className="lg:sticky lg:top-8">
+          <Map 
+            stations={sortedStations}
+            selectedStation={selectedStation}
+            onStationSelect={setSelectedStation}
+            center={selectedStation ? {
+              lat: selectedStation.Latitude,
+              lng: selectedStation.Longitude
+            } : undefined}
+          />
         </div>
       </div>
     </div>
