@@ -79,8 +79,14 @@ const StatePage = () => {
     isLegacyUrl
   });
 
-  // Filter stations based on search query
+  // Filter stations based on search query and fuel type
   const filteredStations = stateStations.filter(station => {
+    // First check if the station has the selected fuel type
+    if (filters.fuelType !== 'Regular' && (station[filters.fuelType] === 'NA' || station[filters.fuelType] === '--')) {
+      return false;
+    }
+    
+    // Then check the search query
     if (!searchQuery) return true;
     
     const searchLower = searchQuery.toLowerCase();
@@ -93,8 +99,18 @@ const StatePage = () => {
 
   // Sort stations by price
   const sortedStations = [...filteredStations].sort((a, b) => {
-    const priceA = parseFloat(a[filters.fuelType].replace('$', ''));
-    const priceB = parseFloat(b[filters.fuelType].replace('$', ''));
+    const priceA = parseFloat(a[filters.fuelType].replace(/[^0-9.]/g, '')) || 0;
+    const priceB = parseFloat(b[filters.fuelType].replace(/[^0-9.]/g, '')) || 0;
+    
+    // If both prices are 0 (invalid), sort by name
+    if (priceA === 0 && priceB === 0) {
+      return a["Store Name"].localeCompare(b["Store Name"]);
+    }
+    
+    // If one price is 0 (invalid), put it at the end
+    if (priceA === 0) return 1;
+    if (priceB === 0) return -1;
+    
     return priceA - priceB;
   });
 

@@ -7,23 +7,47 @@ interface FilterPanelProps {
     maxPrice: number;
     maxDistance: number;
   };
-  onFilterChange: (filters: any) => void;
+  onChange: (filters: any) => void;
 }
 
-const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onFilterChange }) => {
+const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onChange }) => {
+  const handleFuelTypeChange = (value: string) => {
+    onChange({ ...filters, fuelType: value });
+  };
+
   return (
     <div className="space-y-4">
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Fuel Type</label>
-        <select
-          className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
-          value={filters.fuelType}
-          onChange={(e) => onFilterChange({ ...filters, fuelType: e.target.value })}
+      <div className="grid grid-cols-3 gap-2">
+        <button
+          className={`px-4 py-2 text-sm font-medium rounded-md ${
+            filters.fuelType === 'Regular'
+              ? 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+          }`}
+          onClick={() => handleFuelTypeChange('Regular')}
         >
-          <option value="Regular">Regular</option>
-          <option value="Premium">Premium</option>
-          <option value="Diesel">Diesel</option>
-        </select>
+          Regular
+        </button>
+        <button
+          className={`px-4 py-2 text-sm font-medium rounded-md ${
+            filters.fuelType === 'Premium'
+              ? 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+          }`}
+          onClick={() => handleFuelTypeChange('Premium')}
+        >
+          Premium
+        </button>
+        <button
+          className={`px-4 py-2 text-sm font-medium rounded-md ${
+            filters.fuelType === 'Diesel'
+              ? 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+          }`}
+          onClick={() => handleFuelTypeChange('Diesel')}
+        >
+          Diesel
+        </button>
       </div>
 
       <div>
@@ -36,7 +60,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onFilterChange }) =>
           max="6"
           step="0.1"
           value={filters.maxPrice}
-          onChange={(e) => onFilterChange({ ...filters, maxPrice: parseFloat(e.target.value) })}
+          onChange={(e) => onChange({ ...filters, maxPrice: parseFloat(e.target.value) })}
           className="mt-1 w-full"
         />
       </div>
@@ -51,7 +75,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ filters, onFilterChange }) =>
           max="100"
           step="5"
           value={filters.maxDistance}
-          onChange={(e) => onFilterChange({ ...filters, maxDistance: parseInt(e.target.value) })}
+          onChange={(e) => onChange({ ...filters, maxDistance: parseInt(e.target.value) })}
           className="mt-1 w-full"
         />
       </div>
