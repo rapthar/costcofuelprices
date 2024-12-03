@@ -1,0 +1,7 @@
+# Redirect old station URLs to new format
+/station/costco-gas-in-:city/:address    /station/us/:city/costco/:address    301
+/station/costco-gas-in-:address          /station/us/:city/costco/:address    301
+
+# Redirect non-www to www
+http://costcofuelprices.com/*    https://www.costcofuelprices.com/:splat    301
+https://costcofuelprices.com/*   https://www.costcofuelprices.com/:splat    301
