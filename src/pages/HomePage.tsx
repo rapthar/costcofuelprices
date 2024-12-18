@@ -3,9 +3,11 @@ import Hero from '../components/Hero';
 import NationalAverage from '../components/NationalAverage';
 import StateGridSection from '../components/StateGridSection';
 import ProvinceGridSection from '../components/ProvinceGridSection';
+import TopCitiesSection from '../components/TopCitiesSection';
 import { usePageTitle } from '../hooks/usePageTitle';
 
 const HomePage = () => {
+  console.log('Rendering HomePage');
   usePageTitle(
     'Costco Gas Prices - Find the Best Fuel Prices at Costco Gas Stations',
     'Find real-time Costco gas prices, compare fuel costs, and locate the nearest Costco gas station. Save money on your next fill-up with our comprehensive price tracking.'
@@ -18,6 +20,8 @@ const HomePage = () => {
       </div>
       
       <NationalAverage />
+      
+      <TopCitiesSection />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <StateGridSection />

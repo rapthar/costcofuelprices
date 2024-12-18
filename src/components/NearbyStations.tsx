@@ -10,10 +10,11 @@ interface Props {
 
 const NearbyStations: React.FC<Props> = ({ stations, isCanada = false }) => {
   const getStationId = (station: any) => {
-    if (isCanada) {
-      return `costco-gas-in-${station.City.toLowerCase()}-${station.Address.toLowerCase()}`.replace(/\s+/g, '-');
-    }
-    return station.Title.toLowerCase().replace(/\s+/g, '-');
+    const citySlug = station.City.toLowerCase().replace(/\s+/g, '-');
+    const addressSlug = station.Address.toLowerCase().replace(/\s+/g, '-');
+    const stateSlug = station['State Full'].toLowerCase().replace(/\s+/g, '-');
+    
+    return `${isCanada ? 'canada' : 'us'}/costco-${addressSlug}-${citySlug}-${stateSlug}`;
   };
 
   return (

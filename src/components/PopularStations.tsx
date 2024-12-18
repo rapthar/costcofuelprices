@@ -18,8 +18,11 @@ const PopularStations = () => {
     }, [] as typeof stations);
 
   const getStationUrl = (station: typeof stations[0]) => {
-    const streetAddress = station.Address.split(',')[0];
-    return `/station/us/costco-gas-in-${station.City.toLowerCase()}-${streetAddress.toLowerCase()}-${station.City.toLowerCase()}-${station["State Full"].toLowerCase()}-${station.Zipcode}`.replace(/\s+/g, '-');
+    const citySlug = station.City.toLowerCase().replace(/\s+/g, '-');
+    const addressSlug = station.Address.toLowerCase().replace(/\s+/g, '-');
+    const stateSlug = station['State Full'].toLowerCase().replace(/\s+/g, '-');
+    
+    return `/station/us/costco-${addressSlug}-${citySlug}-${stateSlug}`;
   };
 
   // Calculate random hours between 1-6 for demo purposes

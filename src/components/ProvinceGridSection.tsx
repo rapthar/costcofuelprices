@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { MapPin } from 'lucide-react';
 import { canadaStations } from '../data';
-import { generateStationUrl } from '../utils/urls';
 
 const ProvinceGridSection: React.FC = () => {
   const provinceStations = React.useMemo(() => {
@@ -17,6 +16,14 @@ const ProvinceGridSection: React.FC = () => {
 
     return Object.entries(grouped).sort((a, b) => a[0].localeCompare(b[0]));
   }, []);
+
+  const getStationUrl = (station: StationData) => {
+    const citySlug = station.City.toLowerCase().replace(/\s+/g, '-');
+    const addressSlug = station.Address.toLowerCase().replace(/\s+/g, '-');
+    const stateSlug = station['State Full'].toLowerCase().replace(/\s+/g, '-');
+    
+    return `/station/canada/costco-${addressSlug}-${citySlug}-${stateSlug}`;
+  };
 
   return (
     <section className="py-16 bg-gray-50">
@@ -45,7 +52,7 @@ const ProvinceGridSection: React.FC = () => {
               {stations.slice(0, 3).map((station, index) => (
                 <Link
                   key={index}
-                  to={generateStationUrl(station, true)}
+                  to={getStationUrl(station)}
                   className="flex items-start gap-3 group"
                 >
                   <MapPin className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" />

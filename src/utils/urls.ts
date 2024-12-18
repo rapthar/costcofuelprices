@@ -3,9 +3,11 @@ import { StationData } from '../types';
 
 export const generateStationUrl = (station: StationData, isCanada: boolean = false): string => {
   const baseUrl = isCanada ? '/station/canada' : '/station/us';
-  const addressSlug = slugify(station.Address, { lower: true });
+  const citySlug = station.City.toLowerCase().replace(/\s+/g, '-');
+  const addressSlug = station.Address.toLowerCase().replace(/\s+/g, '-');
+  const stateSlug = station['State Full'].toLowerCase().replace(/\s+/g, '-');
   
-  return `${baseUrl}/costco-${addressSlug}`;
+  return `${baseUrl}/costco-${addressSlug}-${citySlug}-${stateSlug}`;
 };
 
 export const generateStateUrl = (state: string, isCanada: boolean = false): string => {
@@ -78,12 +80,14 @@ export const parseStationUrl = (url: string): {
     };
   }
 
+  const isCanada = url.includes('/canada/');
+
   // Extract the address part after "costco-"
   const addressMatch = url.match(/costco-(.+)$/);
   if (!addressMatch) {
     console.log('No address found in URL');
     return {
-      isCanada: false,
+      isCanada,
       city: '',
       storeName: '',
       address: ''
@@ -93,25 +97,29 @@ export const parseStationUrl = (url: string): {
   const address = decodeURIComponent(addressMatch[1]);
   console.log('Extracted address:', address);
   
-  // Extract city from address (usually between street name and state)
+  // Extract city from address (usually between street name and state/province)
   const addressParts = address.split('-');
   console.log('Address parts:', addressParts);
   
   let city = '';
   
-  // Look for state abbreviation and take the part before it as city
+  // Combined US states and Canadian provinces for detection
   const stateIndex = addressParts.findIndex(part => 
-    /^(al|ak|az|ar|ca|co|ct|de|fl|ga|hi|id|il|in|ia|ks|ky|la|me|md|ma|mi|mn|ms|mo|mt|ne|nv|nh|nj|nm|ny|nc|nd|oh|ok|or|pa|ri|sc|sd|tn|tx|ut|vt|va|wa|wv|wi|wy)$/i.test(part)
+    /^(al|ak|az|ar|ca|co|ct|de|fl|ga|hi|id|il|in|ia|ks|ky|la|me|md|ma|mi|mn|ms|mo|mt|ne|nv|nh|nj|nm|ny|nc|nd|oh|ok|or|pa|ri|sc|sd|tn|tx|ut|vt|va|wa|wv|wi|wy|ab|bc|mb|nb|nl|ns|nt|nu|on|pe|qc|sk|yt)$/i.test(part)
   );
   
   if (stateIndex > 0) {
-    city = addressParts[stateIndex - 1];
+    // Take all parts before the state/province as the city name
+    city = addressParts.slice(0, stateIndex).join(' ');
+  } else {
+    // If no state/province found, take the second-to-last part as the city
+    city = addressParts[Math.max(0, addressParts.length - 2)];
   }
   
   const result = {
-    isCanada: url.includes('/canada/'),
+    isCanada,
     city,
-    storeName: 'costco',
+    storeName: 'Costco',
     address
   };
   
